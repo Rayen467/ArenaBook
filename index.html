@@ -1,22 +1,230 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1511">
-<title>ArenaBook — Booking Lapangan</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7f5;color:#16211d}button{font:inherit;cursor:pointer}.app{min-height:100vh}.side{position:fixed;inset:0 auto 0 0;width:225px;background:#0b1511;color:#fff;padding:22px 15px;display:flex;flex-direction:column}.logo{display:flex;align-items:center;gap:10px;padding:0 8px 26px}.mark{width:38px;height:38px;border-radius:12px;background:#25c67b;display:grid;place-items:center;font-weight:900;color:#07130d}.logo b{font-size:17px}.logo small{display:block;color:#718079;font-size:10px}.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#7d8d85;border-radius:11px;padding:11px 12px;text-align:left}.nav button.on{background:#16251f;color:white;box-shadow:inset 3px 0 #28ca7d}.sidefoot{margin-top:auto}.switch{padding:10px;background:#111f1a;border:1px solid #203129;border-radius:13px}.switch small{color:#75867d}.switch div{display:grid;grid-template-columns:1fr 1fr;background:#0b1511;padding:3px;border-radius:8px;margin-top:7px}.switch button{border:0;background:transparent;color:#788980;padding:7px;border-radius:7px;font-size:11px}.switch button.on{background:#1d3329;color:#51dfa1}.main{margin-left:225px}.top{height:64px;border-bottom:1px solid #e4ebe7;background:#f8faf9dd;backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:flex-end;padding:0 28px;position:sticky;top:0;z-index:10}.pill{padding:8px 11px;border-radius:99px;background:#e7f7ee;color:#168d5a;font-weight:800;font-size:10px}.page{display:none;padding:28px;max-width:1220px;margin:auto}.page.on{display:block}.hero{background:#0d1a15;color:white;border-radius:24px;padding:44px;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;overflow:hidden}.eyebrow{display:inline-block;padding:6px 9px;border-radius:99px;background:#173025;color:#66dda2;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.hero h1{font-size:44px;line-height:1.08;margin:20px 0 14px;letter-spacing:-.04em}.hero h1 em{font-style:normal;color:#59dda0}.hero p{color:#92a299;line-height:1.7;font-size:13px;max-width:550px}.primary{border:0;background:#25c67b;color:#07130d;padding:11px 15px;border-radius:10px;font-weight:800;font-size:12px}.ghost{border:1px solid #dce6e1;background:white;color:#33483f;padding:10px 14px;border-radius:10px;font-weight:700;font-size:11px}.hero .ghost{background:#17261f;color:#d7e5de;border-color:#273b32}.actions{display:flex;gap:9px;margin-top:24px}.courtvisual{min-height:320px;border-radius:18px;background:radial-gradient(circle at 55% 30%,#2c8b62,#153f2d 58%,#10291f);position:relative;border:1px solid #ffffff18}.courtvisual:before{content:"";position:absolute;inset:18px;border:1px solid #ffffff50}.courtvisual:after{content:"";position:absolute;left:50%;top:18px;bottom:18px;border-left:1px solid #ffffff50}.float{position:absolute;background:#f8fbf9ef;color:#153024;border-radius:12px;padding:11px 13px;box-shadow:0 18px 35px #0003}.float.a{left:23px;bottom:23px}.float.b{right:23px;top:23px}.float small{display:block;color:#84938b;font-size:9px}.float b{display:block;font-size:11px;margin-top:3px}.stats{display:grid;grid-template-columns:repeat(4,1fr);background:white;border:1px solid #e0e8e3;border-radius:16px;margin:14px 0 30px}.stats div{padding:18px 22px;border-right:1px solid #edf1ef}.stats div:last-child{border:0}.stats b{display:block;font-size:20px}.stats span{color:#87958d;font-size:9px}.head{display:flex;justify-content:space-between;align-items:end;margin:10px 0 18px}.head span{color:#15945d;text-transform:uppercase;letter-spacing:.1em;font-size:9px;font-weight:900}.head h2{margin:4px 0 0;font-size:28px}.head p{margin:4px 0 0;color:#829087;font-size:10px}.date{border:1px solid #dfe8e3;background:white;border-radius:10px;padding:9px 12px;color:#50635a;font-size:10px;font-weight:700}.layout{display:grid;grid-template-columns:230px 1fr;gap:14px}.courts,.card{background:white;border:1px solid #dfe7e3;border-radius:15px}.courts{padding:10px;height:max-content}.courts label{display:block;padding:5px 8px 8px;color:#95a198;font-size:8px;text-transform:uppercase;font-weight:800}.courts button{width:100%;border:0;background:transparent;border-radius:10px;padding:9px;text-align:left;display:flex;gap:9px;align-items:center;color:#637269}.courts button.on{background:#edf9f3;color:#173329}.courts i{width:30px;height:30px;border-radius:8px;background:#f1f5f3;display:grid;place-items:center;font-style:normal}.courts b{font-size:10px}.courts small{display:block;color:#9aa69f;font-size:8px}.schedule{padding:18px}.schedhead{display:flex;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid #edf1ef}.schedhead h3{margin:0}.schedhead p{margin:4px 0 0;color:#8a978f;font-size:9px}.legend{display:flex;gap:10px;font-size:8px;color:#819088}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}.g{background:#25bf79}.y{background:#e0ad53}.r{background:#db625b}.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:18px 0}.slot{border:1px solid #dfe7e3;background:white;border-radius:9px;padding:11px 8px;text-align:left}.slot b{display:block;font-size:10px}.slot small{font-size:8px;color:#7d8b83}.slot.free:hover{border-color:#32bb7b;background:#f1fbf6}.slot.booked{background:#fff1f0;color:#b65b55}.slot.pending{background:#fff9eb;color:#a27829}.slot.maint{background:#f1f4f2;color:#919e97}.note{padding:11px;background:#f6f9f7;border-radius:10px;font-size:9px;color:#708078}.note b{color:#243a31}.adminstats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:13px}.metric{background:white;border:1px solid #dfe7e3;border-radius:13px;padding:14px}.metric span,.metric small{display:block;color:#85938b;font-size:8px}.metric b{display:block;font-size:16px;margin:2px 0}.admingrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.panel{padding:18px}.panelhead{display:flex;justify-content:space-between}.panelhead span{color:#15945d;text-transform:uppercase;font-size:8px;font-weight:900}.panelhead h3{margin:4px 0;font-size:18px}.toggle{width:58px;height:29px;border:0;border-radius:99px;background:#25bc76;position:relative;color:white;font-size:7px;font-weight:900}.toggle:after{content:"";position:absolute;width:23px;height:23px;background:white;border-radius:50%;right:3px;top:3px}.toggle.off{background:#cfd8d3;color:#6d7a73}.toggle.off:after{right:32px}.modes{display:grid;grid-template-columns:1fr 1fr;background:#eff4f1;padding:4px;border-radius:9px;margin:13px 0}.modes button{border:0;background:transparent;border-radius:7px;padding:8px;font-size:9px;font-weight:800;color:#74827b}.modes button.on{background:white;color:#168e5a}.rules div{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid #edf1ef;font-size:9px}.live{margin-top:12px;padding:10px;background:#ecf9f2;border-radius:9px;font-size:9px}.live.off{background:#f1f4f2}.caseuser{display:flex;gap:9px;align-items:center;margin:13px 0}.avatar{width:34px;height:34px;border-radius:9px;background:#1e3329;color:#5bdda0;display:grid;place-items:center;font-size:10px;font-weight:900}.caseuser b,.caseuser small{display:block}.caseuser b{font-size:10px}.caseuser small{font-size:8px;color:#849189}.timeline{border-left:1px solid #dbe3df;margin-left:7px;padding-left:14px}.timeline div{display:grid;grid-template-columns:55px 1fr;padding:5px 0;font-size:9px}.timeline span{color:#88968e}.fine{display:flex;justify-content:space-between;align-items:center;background:#fff1f0;border:1px solid #f1d6d3;border-radius:9px;padding:11px;margin-top:11px}.fine.ok{background:#edf9f3;border-color:#d2ecde}.fine small{display:block;color:#88948e;font-size:8px}.fine strong{font-size:18px;color:#c95751}.fine.ok strong{color:#168c59}.caseactions{display:flex;gap:8px;margin-top:10px}.caseactions button{flex:1}.table{margin-top:13px;padding:18px;overflow:auto}.table h3{margin-top:0}table{width:100%;border-collapse:collapse;min-width:720px}th,td{text-align:left;padding:9px 7px;border-bottom:1px solid #edf1ef;font-size:9px}th{color:#8c9991;text-transform:uppercase;font-size:8px}.status{padding:4px 7px;border-radius:99px;background:#e7f8ef;color:#168b58;font-size:8px;font-weight:800}.warn{background:#fff4da;color:#a97322}.finechip{padding:4px 7px;border-radius:99px;background:#fff0ef;color:#ba524c;font-size:8px;font-weight:800}.drawer{position:fixed;inset:0;background:#07100caa;display:none;justify-content:flex-end;z-index:50}.drawer.on{display:flex}.sheet{width:min(455px,100%);height:100%;background:#fbfdfc;padding:25px;overflow:auto;position:relative}.close{position:absolute;right:18px;top:18px;width:31px;height:31px;border:1px solid #dfe7e3;background:white;border-radius:9px}.sheet h2{margin:5px 0 14px}.sum{background:#0e1b16;color:white;border-radius:11px;padding:11px;display:flex;justify-content:space-between;font-size:10px}.sheet h4{margin:19px 0 8px;font-size:11px}.equip{border:1px solid #e0e8e3;border-radius:10px;background:white}.erow{display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #edf1ef}.erow:last-child{border:0}.erow>div:nth-child(2){flex:1}.erow b,.erow small{display:block}.erow b{font-size:9px}.erow small{font-size:8px;color:#8b9891}.qty button{width:24px;height:24px;border:1px solid #dfe7e3;background:white;border-radius:6px}.pay{display:grid;grid-template-columns:1fr 1fr;gap:7px}.pay button{border:1px solid #dfe7e3;background:white;border-radius:10px;padding:10px;text-align:left;font-size:9px}.pay button.on{border-color:#26b977;background:#f1fbf6}.totals{margin-top:13px;border-top:1px solid #e3e9e6;padding-top:8px}.totals div{display:flex;justify-content:space-between;padding:4px 0;font-size:9px}.totals .grand{border-top:1px dashed #dfe6e2;margin-top:5px;padding-top:9px;font-size:13px}.totals .grand b{color:#168f5b;font-size:17px}.full{width:100%;margin-top:12px}.toast{position:fixed;right:22px;bottom:22px;background:#0d1a15;color:white;padding:11px 14px;border-radius:10px;font-size:10px;display:none;z-index:70}.toast.on{display:block}
-@media(max-width:900px){.side{width:72px}.logo div:last-child,.nav b,.sidefoot{display:none}.nav button{text-align:center}.main{margin-left:72px}.hero{grid-template-columns:1fr}.courtvisual{display:none}.layout{grid-template-columns:1fr}.courts{display:flex;overflow:auto}.courts label{display:none}.courts button{min-width:145px}.adminstats{grid-template-columns:1fr 1fr}.admingrid{grid-template-columns:1fr}}
-@media(max-width:640px){.side{inset:auto 0 0 0;width:100%;height:62px;padding:7px}.logo,.sidefoot{display:none}.nav{grid-template-columns:repeat(4,1fr)}.nav button{padding:7px 3px;font-size:8px}.nav b{display:block}.main{margin-left:0;padding-bottom:65px}.top{height:55px;padding:0 14px}.page{padding:16px}.hero{padding:30px 22px}.hero h1{font-size:34px}.stats{grid-template-columns:1fr 1fr}.stats div:nth-child(2){border-right:0}.slots{grid-template-columns:repeat(3,1fr)}.head{align-items:flex-start;gap:8px}.head h2{font-size:24px}.adminstats{grid-template-columns:1fr 1fr}.metric{padding:11px}.pay{grid-template-columns:1fr}.sheet{height:92%;margin-top:auto;border-radius:18px 18px 0 0}.drawer{align-items:flex-end}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1511" />
+  <title>ArenaBook — Booking Lapangan & Perlengkapan</title>
+  <meta name="description" content="Demo sistem booking lapangan dan perlengkapan dengan jadwal, transaksi online/offline, invoice, dan denda adaptif." />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="app"><aside class="side"><div class="logo"><div class="mark">A</div><div><b>ArenaBook</b><small>Sport booking</small></div></div><div class="nav"><button class="on" data-page="user">⌂ <b>Booking</b></button><button data-page="admin" class="adminonly" style="display:none">◆ <b>Admin</b></button></div><div class="sidefoot"><div class="switch"><small>Demo sebagai</small><div><button class="on" data-role="user">User</button><button data-role="admin">Admin</button></div></div></div></aside>
-<main class="main"><header class="top"><span class="pill" id="modepill">User mode</span></header>
-<section class="page on" id="user"><div class="hero"><div><span class="eyebrow">Booking olahraga tanpa ribet</span><h1>Main kapan aja.<br><em>Slot aman, bayar gampang.</em></h1><p>Cek jadwal, pilih lapangan, tambah perlengkapan, lalu bayar online atau langsung di lokasi. Sistem juga mencegah bentrok jadwal.</p><div class="actions"><button class="primary" onclick="document.getElementById('schedule').scrollIntoView({behavior:'smooth'})">Cari jadwal →</button><button class="ghost">Lihat booking</button></div></div><div class="courtvisual"><div class="float a"><small>Slot berikutnya</small><b>19:00 · Futsal A</b></div><div class="float b"><small>Pembayaran</small><b>Online / Offline</b></div></div></div><div class="stats"><div><b>6</b><span>Lapangan aktif</span></div><div><b>15m</b><span>Update jadwal</span></div><div><b>4.9</b><span>Rating pengguna</span></div><div><b>07–23</b><span>Jam operasional</span></div></div>
-<div id="schedule"><div class="head"><div><span>Jadwal arena</span><h2>Cari slot yang pas</h2><p>Slot hijau bisa langsung dibooking.</p></div><button class="date">▣ Senin, 14 Sep 2026</button></div><div class="layout"><aside class="courts"><label>Lapangan</label><button class="on" data-court="Futsal A"><i>⚽</i><div><b>Futsal A</b><small>Indoor · Vinyl</small></div></button><button data-court="Futsal B"><i>⚽</i><div><b>Futsal B</b><small>Indoor · Vinyl</small></div></button><button data-court="Badminton 2"><i>🏸</i><div><b>Badminton 2</b><small>Indoor · Karpet</small></div></button><button data-court="Basket A"><i>🏀</i><div><b>Basket A</b><small>Outdoor · Acrylic</small></div></button></aside><section class="card schedule"><div class="schedhead"><div><h3 id="courtname">Futsal A</h3><p>⌖ Arena Utama · Tangerang</p></div><div class="legend"><span><i class="dot g"></i>Tersedia</span><span><i class="dot y"></i>Pending</span><span><i class="dot r"></i>Terisi</span></div></div><div class="slots" id="slots"></div><div class="note"><b>Denda adaptif:</b> jika jadwal sesudahnya kosong, admin dapat menonaktifkan denda keterlambatan.</div></section></div></div></section>
-<section class="page" id="admin"><div class="head"><div><span>Operasional hari ini</span><h2>Admin dashboard</h2><p>Booking, pembayaran, perlengkapan dan denda.</p></div><button class="date">14 Sep 2026</button></div><div class="adminstats"><div class="metric"><span>Booking hari ini</span><b>27</b><small>+12% vs kemarin</small></div><div class="metric"><span>Pendapatan</span><b>Rp4,85jt</b><small>Online + offline</small></div><div class="metric"><span>Sedang bermain</span><b>3</b><small>2 arena kosong</small></div><div class="metric"><span>Alat disewa</span><b>38</b><small>7 jenis</small></div></div><div class="admingrid"><section class="card panel"><div class="panelhead"><div><span>Kontrol denda</span><h3>Denda adaptif</h3></div><button class="toggle" id="toggle">ON</button></div><p style="font-size:9px;color:#7e8c84">Aktif hanya saat keterlambatan benar-benar mengganggu booking berikutnya.</p><div class="modes"><button class="on" data-fmode="adaptive">⚡ Otomatis adaptif</button><button data-fmode="manual">⚙ Manual admin</button></div><div class="rules"><div><span>Toleransi</span><b>5 menit</b></div><div><span>Tarif</span><b>Rp10.000 / 10 menit</b></div><div><span>Maksimum</span><b>Rp100.000</b></div></div><div class="live" id="live"><b>Denda aktif</b><br><span id="livetxt">Sistem mengecek booking berikutnya sebelum menghitung denda.</span></div></section><section class="card panel"><div class="panelhead"><div><span>Kasus aktif</span><h3>BK-0914-A015</h3></div><span class="status">Confirmed</span></div><div class="caseuser"><div class="avatar">RT</div><div><b>Rayhandi Tenri</b><small>Futsal A · 19:00–20:00</small></div></div><div class="timeline"><div><span>20:00</span><b>Booking selesai</b></div><div><span>20:17</span><b>Terlambat 17 menit</b></div><div><span>20:00</span><b>Booking berikutnya sudah terisi</b></div></div><div class="fine" id="fine"><div><small>Denda terhitung</small><strong id="fineamt">Rp20.000</strong></div><small id="finereason">Mengganggu booking berikutnya</small></div><div class="caseactions"><button class="ghost" id="waive">× Bebaskan denda</button><button class="primary" id="confirmfine">Konfirmasi</button></div></section></div><section class="card table"><h3>Booking hari ini</h3><table><thead><tr><th>Booking</th><th>User</th><th>Lapangan</th><th>Waktu</th><th>Bayar</th><th>Status</th><th>Denda</th></tr></thead><tbody><tr><td>BK-0914-A015</td><td>Rayhandi Tenri</td><td>Futsal A</td><td>19:00–20:00</td><td>QRIS</td><td><span class="status">Confirmed</span></td><td><span class="finechip">Rp20.000</span></td></tr><tr><td>BK-0914-A016</td><td>Dimas</td><td>Badminton 2</td><td>20:00–21:00</td><td>Cash</td><td><span class="status">Check-in</span></td><td>—</td></tr><tr><td>BK-0914-A017</td><td>Nadia</td><td>Basket A</td><td>21:00–22:00</td><td>VA</td><td><span class="status warn">Pending</span></td><td>—</td></tr></tbody></table></section></section></main></div>
-<div class="drawer" id="drawer"><div class="sheet"><button class="close" id="close">×</button><span class="eyebrow">Checkout booking</span><h2 id="drawcourt">Futsal A</h2><div class="sum"><span id="drawtime">19:00–20:00</span><b id="courtprice">Rp170.000</b></div><h4>Tambah perlengkapan</h4><div class="equip" id="equip"></div><h4>Pembayaran</h4><div class="pay"><button class="on" data-pay="online"><b>Online</b><br><small>QRIS / VA / E-Wallet</small></button><button data-pay="offline"><b>Bayar di tempat</b><br><small>Konfirmasi kasir</small></button></div><div class="totals"><div><span>Lapangan</span><b id="tcourt">Rp0</b></div><div><span>Perlengkapan</span><b id="tequip">Rp0</b></div><div><span>Biaya admin</span><b id="tadmin">Rp5.000</b></div><div class="grand"><span>Total</span><b id="ttotal">Rp0</b></div></div><button class="primary full" id="book">Konfirmasi Booking →</button></div></div><div class="toast" id="toast"></div>
-<script>
-const S={role:'user',court:'Futsal A',slot:null,pay:'online',qty:{},penalty:true,waived:false};const slots=[['08:00','free',100000],['09:00','booked',100000],['10:00','free',100000],['11:00','pending',100000],['12:00','maint',100000],['13:00','free',110000],['14:00','free',110000],['15:00','free',120000],['16:00','booked',130000],['17:00','free',150000],['18:00','free',160000],['19:00','free',170000],['20:00','booked',170000],['21:00','free',160000]];const eq=[['⚽','Bola Futsal',15000,5],['👕','Rompi Tim',20000,8],['👟','Sepatu Futsal',30000,7],['🔶','Cone Training',10000,10]];const rp=n=>'Rp'+n.toLocaleString('id-ID');function toast(t){let e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(window.tm);window.tm=setTimeout(()=>e.classList.remove('on'),2200)}function page(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('on',x.dataset.page===id));scrollTo(0,0)}document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{S.role=b.dataset.role;document.querySelectorAll('[data-role]').forEach(x=>x.classList.toggle('on',x===b));document.querySelector('.adminonly').style.display=S.role==='admin'?'block':'none';document.getElementById('modepill').textContent=S.role==='admin'?'Admin mode':'User mode';page(S.role==='admin'?'admin':'user')});document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>page(b.dataset.page));document.querySelectorAll('[data-court]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-court]').forEach(x=>x.classList.remove('on'));b.classList.add('on');S.court=b.dataset.court;courtname.textContent=S.court});function renderSlots(){document.getElementById('slots').innerHTML=slots.map(([t,s,p])=>`<button class="slot ${s}" ${s!=='free'?'disabled':''} data-t="${t}" data-p="${p}"><b>${t}</b><small>${s==='free'?rp(p/1000)+'K':s==='booked'?'Terisi':s==='pending'?'Pending':'Maintenance'}</small></button>`).join('');document.querySelectorAll('.slot.free').forEach(b=>b.onclick=()=>openBook(b.dataset.t,+b.dataset.p))}function renderEq(){equip.innerHTML=eq.map((e,i)=>`<div class="erow"><span>${e[0]}</span><div><b>${e[1]}</b><small>${rp(e[2])}</small></div><div class="qty"><button data-i="${i}" data-d="-1">−</button> <span id="q${i}">${S.qty[i]||0}</span> <button data-i="${i}" data-d="1">+</button></div></div>`).join('');document.querySelectorAll('.qty button').forEach(b=>b.onclick=()=>{let i=+b.dataset.i;S.qty[i]=Math.max(0,Math.min(eq[i][3],(S.qty[i]||0)+ +b.dataset.d));document.getElementById('q'+i).textContent=S.qty[i];totals()})}function openBook(t,p){S.slot={t,p};drawcourt.textContent=S.court;drawtime.textContent=t+'–'+String(+t.slice(0,2)+1).padStart(2,'0')+':00';courtprice.textContent=rp(p);drawer.classList.add('on');renderEq();totals()}function totals(){let e=eq.reduce((a,x,i)=>a+(S.qty[i]||0)*x[2],0),a=S.pay==='online'?5000:0,p=S.slot?.p||0;tcourt.textContent=rp(p);tequip.textContent=rp(e);tadmin.textContent=a?rp(a):'Gratis';ttotal.textContent=rp(p+e+a)}close.onclick=()=>drawer.classList.remove('on');drawer.onclick=e=>{if(e.target===drawer)drawer.classList.remove('on')};document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-pay]').forEach(x=>x.classList.remove('on'));b.classList.add('on');S.pay=b.dataset.pay;totals()});book.onclick=()=>{drawer.classList.remove('on');toast(S.pay==='online'?'Booking dibuat · menunggu pembayaran QRIS':'Booking dibuat · bayar di kasir')};function fineUI(){toggle.classList.toggle('off',!S.penalty);toggle.textContent=S.penalty?'ON':'OFF';live.classList.toggle('off',!S.penalty);live.querySelector('b').textContent=S.penalty?'Denda aktif':'Denda nonaktif';livetxt.textContent=S.penalty?'Sistem mengecek booking berikutnya sebelum menghitung denda.':'Semua denda keterlambatan dinonaktifkan.';let a=S.penalty&&!S.waived;fine.className='fine '+(a?'':'ok');fineamt.textContent=a?'Rp20.000':'Rp0';finereason.textContent=a?'Mengganggu booking berikutnya':S.waived?'Dibebaskan admin':'Denda global OFF';waive.textContent=S.waived?'✓ Aktifkan kembali':'× Bebaskan denda'}toggle.onclick=()=>{S.penalty=!S.penalty;fineUI();toast(S.penalty?'Denda global ON':'Denda global OFF')};waive.onclick=()=>{S.waived=!S.waived;fineUI();toast(S.waived?'Denda dibebaskan · audit log tersimpan':'Denda diaktifkan kembali')};confirmfine.onclick=()=>toast('Denda dikonfirmasi · invoice diperbarui');document.querySelectorAll('[data-fmode]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-fmode]').forEach(x=>x.classList.remove('on'));b.classList.add('on');toast(b.dataset.fmode==='adaptive'?'Mode adaptif aktif':'Mode manual aktif')});renderSlots();fineUI();
-</script>
-</body></html>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div><strong>ArenaBook</strong><span>Venue & equipment booking</span></div>
+    </div>
+
+    <div class="role-card">
+      <span>Mode demo</span>
+      <div class="segmented">
+        <button class="active" data-role="user">User</button>
+        <button data-role="admin">Admin</button>
+      </div>
+    </div>
+
+    <nav id="userNav" class="nav-list">
+      <button class="nav-item active" data-view="user-home"><span>⌂</span><b>Beranda</b></button>
+      <button class="nav-item" data-view="booking"><span>▦</span><b>Booking</b></button>
+      <button class="nav-item" data-view="my-bookings"><span>◫</span><b>Booking Saya</b></button>
+      <button class="nav-item" data-view="user-transactions"><span>Rp</span><b>Transaksi</b></button>
+    </nav>
+
+    <nav id="adminNav" class="nav-list hidden">
+      <button class="nav-item active" data-view="admin-home"><span>◆</span><b>Overview</b></button>
+      <button class="nav-item" data-view="admin-schedule"><span>▦</span><b>Jadwal</b></button>
+      <button class="nav-item" data-view="admin-bookings"><span>◫</span><b>Booking</b></button>
+      <button class="nav-item" data-view="admin-equipment"><span>▣</span><b>Perlengkapan</b></button>
+      <button class="nav-item" data-view="admin-transactions"><span>Rp</span><b>Transaksi</b></button>
+      <button class="nav-item" data-view="admin-penalty"><span>!</span><b>Denda</b></button>
+      <button class="nav-item" data-view="admin-reports"><span>↗</span><b>Laporan</b></button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="system-badge"><i></i><div><b>Demo System</b><span>Data lokal simulasi</span></div></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <span class="crumb" id="crumb">USER / BERANDA</span>
+        <h1 id="pageTitle">Selamat datang kembali</h1>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" title="Notifikasi">🔔<span class="notif-dot"></span></button>
+        <div class="profile-chip"><div class="avatar">RT</div><div><b>Rayhandi</b><span id="roleLabel">User</span></div></div>
+      </div>
+    </header>
+
+    <section id="user-home" class="view active">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <span class="eyebrow">BOOKING LEBIH PRAKTIS</span>
+          <h2>Main kapan saja,<br><em>jadwal tetap aman.</em></h2>
+          <p>Pilih lapangan, cek slot real-time, tambah perlengkapan, lalu bayar online atau langsung di lokasi.</p>
+          <div class="hero-actions">
+            <button class="btn primary" data-jump="booking">Booking sekarang</button>
+            <button class="btn soft" data-jump="my-bookings">Lihat booking saya</button>
+          </div>
+          <div class="hero-tags"><span>✓ Anti double-booking</span><span>✓ Online / offline</span><span>✓ Denda adaptif</span></div>
+        </div>
+        <div class="court-art">
+          <div class="court-lines"></div>
+          <div class="float-card top"><small>Slot terdekat</small><b>19:00 — 20:00</b><span>Futsal A</span></div>
+          <div class="float-card bottom"><small>Mulai dari</small><b>Rp100.000/jam</b><span>Weekday siang</span></div>
+        </div>
+      </div>
+
+      <div class="metric-grid four">
+        <div class="metric-card"><span>Booking aktif</span><b>2</b><small>1 sudah lunas</small></div>
+        <div class="metric-card"><span>Menunggu bayar</span><b>1</b><small>Berakhir 21:15</small></div>
+        <div class="metric-card"><span>Total transaksi</span><b>Rp865K</b><small>30 hari terakhir</small></div>
+        <div class="metric-card"><span>Reward</span><b>120 pts</b><small>Simulasi loyalti</small></div>
+      </div>
+
+      <div class="section-head"><div><span>BOOKING MENDATANG</span><h3>Jadwal kamu berikutnya</h3><p>Ringkasan booking yang paling dekat.</p></div><button class="btn ghost small" data-jump="my-bookings">Lihat semua</button></div>
+      <div class="upcoming-grid">
+        <article class="booking-ticket accent-green">
+          <div class="ticket-top"><div><span class="tag success">CONFIRMED</span><h4>Lapangan Futsal A</h4><p>Senin, 14 September 2026</p></div><b>#BK-260914-015</b></div>
+          <div class="ticket-details"><div><span>Waktu</span><b>19:00 — 21:00</b></div><div><span>Durasi</span><b>2 jam</b></div><div><span>Pembayaran</span><b>QRIS • Lunas</b></div><div><span>Total</span><b>Rp365.000</b></div></div>
+          <div class="ticket-actions"><button class="btn soft small" data-invoice="BK-260914-015">Lihat invoice</button><button class="btn primary small" data-jump="booking">Booking lagi</button></div>
+        </article>
+        <article class="info-panel">
+          <span class="eyebrow dark">STATUS LIVE</span>
+          <h4>Lapangan Futsal A</h4>
+          <div class="live-row"><div class="live-dot"></div><div><b>Slot kamu belum dimulai</b><span>Mulai dalam 1 jam 26 menit</span></div></div>
+          <div class="progress"><i style="width:26%"></i></div>
+          <p>Check-in dibuka 15 menit sebelum jadwal. QR booking tersedia setelah pembayaran terkonfirmasi.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="booking" class="view">
+      <div class="section-head"><div><span>BOOKING LAPANGAN</span><h3>Pilih jadwal yang tersedia</h3><p>Pilih tanggal, lapangan, lalu klik slot hijau untuk lanjut ke checkout.</p></div><div class="date-control"><button>‹</button><b>14 Sep 2026</b><button>›</button></div></div>
+
+      <div class="booking-layout">
+        <aside class="filter-card card">
+          <label>Kategori olahraga</label>
+          <div class="filter-chips"><button class="active">Semua</button><button>Futsal</button><button>Badminton</button><button>Basket</button></div>
+          <label>Lapangan</label>
+          <div id="courtList" class="court-list"></div>
+          <div class="filter-note"><b>Harga dinamis</b><p>Harga malam dan weekend dapat berbeda sesuai aturan admin.</p></div>
+        </aside>
+
+        <div class="card schedule-card">
+          <div class="schedule-top">
+            <div><h4 id="selectedCourtName">Lapangan Futsal A</h4><p id="selectedCourtMeta">Futsal • Indoor • Vinyl Pro</p></div>
+            <div class="legend"><span><i class="dot free"></i>Tersedia</span><span><i class="dot pending"></i>Pending</span><span><i class="dot booked"></i>Booked</span><span><i class="dot maint"></i>Maintenance</span></div>
+          </div>
+          <div class="week-strip" id="weekStrip"></div>
+          <div class="slot-grid" id="slotGrid"></div>
+          <div class="availability-note"><b>Aturan bentrok:</b> slot tidak dapat dipilih jika jam yang diminta bertabrakan dengan booking aktif, pending yang belum kedaluwarsa, atau maintenance.</div>
+        </div>
+      </div>
+
+      <div class="section-head compact"><div><span>REKOMENDASI</span><h3>Lapangan populer</h3></div></div>
+      <div class="venue-grid" id="venueGrid"></div>
+    </section>
+
+    <section id="my-bookings" class="view">
+      <div class="section-head"><div><span>RIWAYAT BOOKING</span><h3>Booking saya</h3><p>Pantau status lapangan, pembayaran, check-in, dan denda.</p></div><button class="btn primary small" data-jump="booking">+ Booking baru</button></div>
+      <div class="status-tabs"><button class="active">Semua <b>6</b></button><button>Aktif <b>2</b></button><button>Menunggu <b>1</b></button><button>Selesai <b>3</b></button></div>
+      <div class="booking-list" id="userBookingList"></div>
+    </section>
+
+    <section id="user-transactions" class="view">
+      <div class="section-head"><div><span>KEUANGAN</span><h3>Riwayat transaksi</h3><p>Pembayaran online dan offline ditampilkan terpisah dan transparan.</p></div><button class="btn ghost small">Unduh laporan</button></div>
+      <div class="metric-grid three">
+        <div class="metric-card"><span>Total dibayar</span><b>Rp865.000</b><small>6 transaksi</small></div>
+        <div class="metric-card"><span>Online</span><b>Rp665.000</b><small>QRIS & Virtual Account</small></div>
+        <div class="metric-card"><span>Offline</span><b>Rp200.000</b><small>Bayar di lokasi</small></div>
+      </div>
+      <div class="card table-card"><table><thead><tr><th>ID Transaksi</th><th>Tanggal</th><th>Booking</th><th>Metode</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="userTransactionRows"></tbody></table></div>
+    </section>
+
+    <section id="admin-home" class="view">
+      <div class="section-head"><div><span>OPERASIONAL HARI INI</span><h3>Dashboard admin</h3><p>Ringkasan booking, penggunaan lapangan, pendapatan, dan risiko keterlambatan.</p></div><button class="btn primary small" data-jump="admin-bookings">+ Booking manual</button></div>
+      <div class="metric-grid four">
+        <div class="metric-card"><span>Booking hari ini</span><b>27</b><small>+12% vs kemarin</small></div>
+        <div class="metric-card"><span>Pendapatan</span><b>Rp4,85jt</b><small>Online Rp3,6jt</small></div>
+        <div class="metric-card"><span>Lapangan dipakai</span><b>3 / 6</b><small>50% okupansi saat ini</small></div>
+        <div class="metric-card"><span>Potensi denda</span><b>2</b><small>Perlu perhatian</small></div>
+      </div>
+      <div class="admin-grid">
+        <div class="card panel-card">
+          <div class="panel-title"><div><span>JADWAL LIVE</span><h4>Sedang berlangsung</h4></div><button class="btn ghost tiny" data-jump="admin-schedule">Buka kalender</button></div>
+          <div id="liveSchedule" class="live-schedule"></div>
+        </div>
+        <div class="card panel-card">
+          <div class="panel-title"><div><span>PENDAPATAN 7 HARI</span><h4>Tren transaksi</h4></div><b class="growth">+18,4%</b></div>
+          <div class="mini-chart" id="revenueChart"></div>
+          <div class="chart-legend"><span><i></i>Online</span><span><i class="muted"></i>Offline</span></div>
+        </div>
+      </div>
+      <div class="admin-grid">
+        <div class="card panel-card"><div class="panel-title"><div><span>PERLENGKAPAN</span><h4>Stok kritis</h4></div></div><div id="criticalStock"></div></div>
+        <div class="card panel-card"><div class="panel-title"><div><span>AKSI CEPAT</span><h4>Operasional</h4></div></div><div class="quick-actions"><button data-jump="admin-bookings">Konfirmasi booking</button><button data-jump="admin-equipment">Update stok</button><button data-jump="admin-penalty">Kelola denda</button><button data-jump="admin-transactions">Cek pembayaran</button></div></div>
+      </div>
+    </section>
+
+    <section id="admin-schedule" class="view">
+      <div class="section-head"><div><span>KALENDER OPERASIONAL</span><h3>Jadwal semua lapangan</h3><p>Lihat booking, pending, maintenance, dan slot kosong dalam satu tampilan.</p></div><div class="toolbar"><button class="btn ghost small">Hari</button><button class="btn soft small">Minggu</button><button class="btn ghost small">+ Maintenance</button></div></div>
+      <div class="card calendar-wrap" id="adminCalendar"></div>
+    </section>
+
+    <section id="admin-bookings" class="view">
+      <div class="section-head"><div><span>MANAJEMEN BOOKING</span><h3>Semua booking</h3><p>Konfirmasi, check-in, selesaikan, batalkan, atau lihat detail transaksi.</p></div><div class="toolbar"><button class="btn ghost small">Filter</button><button class="btn primary small">+ Booking manual</button></div></div>
+      <div class="filter-bar"><input placeholder="Cari nama / kode booking"/><select><option>Semua status</option><option>Confirmed</option><option>Pending</option><option>Completed</option></select><select><option>Semua lapangan</option><option>Futsal A</option><option>Futsal B</option></select><button class="btn soft small">Terapkan</button></div>
+      <div class="card table-card"><table><thead><tr><th>Booking</th><th>User</th><th>Lapangan</th><th>Jadwal</th><th>Pembayaran</th><th>Denda</th><th>Status</th><th></th></tr></thead><tbody id="adminBookingRows"></tbody></table></div>
+    </section>
+
+    <section id="admin-equipment" class="view">
+      <div class="section-head"><div><span>INVENTARIS</span><h3>Perlengkapan</h3><p>Kelola stok, harga sewa, kondisi barang, dan ketersediaan berbasis waktu booking.</p></div><button class="btn primary small">+ Tambah perlengkapan</button></div>
+      <div class="metric-grid four"><div class="metric-card"><span>Total item</span><b>86</b><small>7 kategori</small></div><div class="metric-card"><span>Sedang disewa</span><b>23</b><small>26,7% dari stok</small></div><div class="metric-card"><span>Stok kritis</span><b>3</b><small>Perlu restock</small></div><div class="metric-card"><span>Rusak / servis</span><b>4</b><small>Tidak dapat disewa</small></div></div>
+      <div id="equipmentGrid" class="equipment-grid"></div>
+    </section>
+
+    <section id="admin-transactions" class="view">
+      <div class="section-head"><div><span>TRANSAKSI</span><h3>Pembayaran & settlement</h3><p>Pantau transaksi online, offline, pending, gagal, refund, dan denda.</p></div><button class="btn ghost small">Export CSV</button></div>
+      <div class="metric-grid four"><div class="metric-card"><span>Gross hari ini</span><b>Rp4,85jt</b><small>27 booking</small></div><div class="metric-card"><span>Online paid</span><b>Rp3,60jt</b><small>74,2%</small></div><div class="metric-card"><span>Offline paid</span><b>Rp1,05jt</b><small>21,6%</small></div><div class="metric-card"><span>Outstanding</span><b>Rp200K</b><small>3 transaksi</small></div></div>
+      <div class="card table-card"><table><thead><tr><th>Transaksi</th><th>Booking</th><th>Pelanggan</th><th>Metode</th><th>Pokok</th><th>Denda</th><th>Total</th><th>Status</th></tr></thead><tbody id="adminTransactionRows"></tbody></table></div>
+    </section>
+
+    <section id="admin-penalty" class="view">
+      <div class="section-head"><div><span>ATURAN DENDA</span><h3>Denda adaptif ON / OFF</h3><p>Denda dapat aktif otomatis saat keterlambatan mengganggu booking berikutnya, atau dimatikan saat kondisi lapang.</p></div><span class="tag success" id="penaltyGlobalBadge">GLOBAL ON</span></div>
+      <div class="penalty-grid">
+        <div class="card penalty-settings">
+          <div class="setting-row main-setting"><div><b>Denda keterlambatan lapangan</b><span>Aturan utama overtime</span></div><button id="globalPenaltyToggle" class="toggle on" aria-label="Toggle denda"><i></i></button></div>
+          <div class="sub-setting"><span>Mode perhitungan</span><div class="segmented light"><button class="active" data-penalty-mode="adaptive">Otomatis adaptif</button><button data-penalty-mode="manual">Manual admin</button></div></div>
+          <div class="setting-form"><label>Toleransi keterlambatan<input id="graceMinutes" type="number" value="5"/><small>menit</small></label><label>Nominal denda<input id="penaltyAmount" type="number" value="10000"/><small>rupiah</small></label><label>Per interval<input id="penaltyInterval" type="number" value="10"/><small>menit</small></label><label>Maksimum denda<input id="penaltyMax" type="number" value="100000"/><small>rupiah</small></label></div>
+          <div class="rule-box"><b>Logika adaptif</b><code>IF actual_end &gt; booking_end + tolerance<br>AND next_booking_start &lt; actual_end<br>THEN penalty = ON<br><br>ELSE penalty = OFF</code></div>
+        </div>
+        <div class="card penalty-case">
+          <div class="panel-title"><div><span>SIMULASI KASUS</span><h4>#BK-260914-019</h4></div><span class="tag danger" id="caseStatus">DENDA AKTIF</span></div>
+          <div class="customer-line"><div class="avatar">AP</div><div><b>Andika Pratama</b><span>Lapangan Futsal A</span></div></div>
+          <div class="case-timeline"><div><span>19:00</span><p>Booking dimulai</p></div><div><span>20:00</span><p>Waktu booking berakhir</p></div><div class="danger-line"><span>20:17</span><p>Selesai aktual (+17 menit)</p></div><div><span>20:00</span><p>Booking berikutnya sudah mulai</p></div></div>
+          <div class="penalty-total"><div><span>Denda terhitung</span><small id="penaltyCalcText">2 interval × Rp10.000</small></div><b id="penaltyTotal">Rp20.000</b></div>
+          <div class="case-actions"><button class="btn ghost" id="waivePenalty">Bebaskan denda</button><button class="btn primary" id="confirmPenalty">Konfirmasi denda</button></div>
+        </div>
+      </div>
+      <div class="card table-card"><div class="panel-title"><div><span>RIWAYAT AUDIT</span><h4>Perubahan denda</h4></div></div><table><thead><tr><th>Waktu</th><th>Booking</th><th>Aksi</th><th>Nominal</th><th>Oleh</th><th>Alasan</th></tr></thead><tbody id="auditRows"></tbody></table></div>
+    </section>
+
+    <section id="admin-reports" class="view">
+      <div class="section-head"><div><span>LAPORAN</span><h3>Performa bisnis</h3><p>Ringkasan okupansi, pendapatan, metode pembayaran, dan kontribusi perlengkapan.</p></div><div class="toolbar"><button class="btn ghost small">1 Sep — 14 Sep</button><button class="btn primary small">Export PDF</button></div></div>
+      <div class="metric-grid four"><div class="metric-card"><span>Revenue</span><b>Rp38,4jt</b><small>+14,8% periode lalu</small></div><div class="metric-card"><span>Booking</span><b>214</b><small>Rata-rata 15/hari</small></div><div class="metric-card"><span>Okupansi</span><b>68,7%</b><small>Prime time 86%</small></div><div class="metric-card"><span>Equipment revenue</span><b>Rp4,2jt</b><small>10,9% dari revenue</small></div></div>
+      <div class="report-grid"><div class="card panel-card"><div class="panel-title"><div><span>OKUPANSI LAPANGAN</span><h4>Pemakaian per venue</h4></div></div><div id="occupancyBars" class="bars"></div></div><div class="card panel-card"><div class="panel-title"><div><span>METODE PEMBAYARAN</span><h4>Komposisi transaksi</h4></div></div><div class="donut-wrap"><div class="donut"><div>74%<span>Online</span></div></div><div class="donut-legend"><p><i></i>Online <b>74%</b></p><p><i class="orange"></i>Offline <b>22%</b></p><p><i class="gray"></i>Outstanding <b>4%</b></p></div></div></div></div>
+    </section>
+  </main>
+</div>
+
+<div id="checkoutDrawer" class="drawer"><div class="drawer-backdrop" data-close="checkout"></div><div class="drawer-sheet"><button class="close-btn" data-close="checkout">×</button><span class="eyebrow dark">CHECKOUT BOOKING</span><h3>Konfirmasi pesanan</h3><div id="checkoutSummary" class="checkout-summary"></div><h4>Tambah perlengkapan</h4><div id="checkoutEquipment" class="checkout-equipment"></div><h4>Metode pembayaran</h4><div class="payment-grid" id="paymentGrid"><button class="active" data-pay="QRIS"><b>QRIS</b><span>Online realtime</span></button><button data-pay="Virtual Account"><b>Virtual Account</b><span>Online realtime</span></button><button data-pay="E-Wallet"><b>E-Wallet</b><span>Online realtime</span></button><button data-pay="Bayar di Lokasi"><b>Bayar di Lokasi</b><span>Offline / kasir</span></button></div><div id="checkoutTotals" class="totals"></div><button id="confirmBooking" class="btn primary full">Konfirmasi booking</button><p class="demo-note">Demo: pembayaran online belum terhubung ke gateway merchant asli.</p></div></div>
+
+<div id="invoiceModal" class="modal"><div class="modal-backdrop" data-close="invoice"></div><div class="modal-card"><button class="close-btn" data-close="invoice">×</button><div class="invoice-logo"><div class="brand-mark">A</div><div><b>ArenaBook</b><span>Invoice booking</span></div></div><div id="invoiceBody"></div><button class="btn primary full" id="printInvoice">Cetak / Simpan PDF</button></div></div>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
