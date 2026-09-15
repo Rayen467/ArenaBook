@@ -3,230 +3,120 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b1511" />
-  <title>ArenaBook — Booking Lapangan & Perlengkapan</title>
-  <meta name="description" content="Demo sistem booking lapangan dan perlengkapan dengan jadwal, transaksi online/offline, invoice, dan denda adaptif." />
+  <meta name="theme-color" content="#0a1712" />
+  <title>ArenaBook — Booking Lapangan</title>
+  <meta name="description" content="Prototype booking lapangan, perlengkapan, checkout, upload bukti transfer, dan verifikasi admin." />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="assistant.css" />
 </head>
 <body>
-<div class="app-shell">
+<div class="shell">
   <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">A</div>
-      <div><strong>ArenaBook</strong><span>Venue & equipment booking</span></div>
-    </div>
-
-    <div class="role-card">
-      <span>Mode demo</span>
-      <div class="segmented">
-        <button class="active" data-role="user">User</button>
-        <button data-role="admin">Admin</button>
-      </div>
-    </div>
-
-    <nav id="userNav" class="nav-list">
-      <button class="nav-item active" data-view="user-home"><span>⌂</span><b>Beranda</b></button>
-      <button class="nav-item" data-view="booking"><span>▦</span><b>Booking</b></button>
-      <button class="nav-item" data-view="my-bookings"><span>◫</span><b>Booking Saya</b></button>
-      <button class="nav-item" data-view="user-transactions"><span>Rp</span><b>Transaksi</b></button>
+    <div class="brand"><div class="brand-mark">A</div><div><strong>ArenaBook</strong><span>Booking & operations</span></div></div>
+    <div class="demo-role"><span>Mode demo</span><div><button class="role-btn active" data-role="user">User</button><button class="role-btn" data-role="admin">Admin</button></div></div>
+    <nav id="userNav" class="nav">
+      <button class="nav-btn active" data-view="home"><span>⌂</span><b>Beranda</b></button>
+      <button class="nav-btn" data-view="booking"><span>▦</span><b>Booking</b></button>
+      <button class="nav-btn" data-view="mybooking"><span>◫</span><b>Booking Saya</b></button>
+      <button class="nav-btn" data-view="payments"><span>Rp</span><b>Pembayaran</b></button>
     </nav>
-
-    <nav id="adminNav" class="nav-list hidden">
-      <button class="nav-item active" data-view="admin-home"><span>◆</span><b>Overview</b></button>
-      <button class="nav-item" data-view="admin-schedule"><span>▦</span><b>Jadwal</b></button>
-      <button class="nav-item" data-view="admin-bookings"><span>◫</span><b>Booking</b></button>
-      <button class="nav-item" data-view="admin-equipment"><span>▣</span><b>Perlengkapan</b></button>
-      <button class="nav-item" data-view="admin-transactions"><span>Rp</span><b>Transaksi</b></button>
-      <button class="nav-item" data-view="admin-penalty"><span>!</span><b>Denda</b></button>
-      <button class="nav-item" data-view="admin-reports"><span>↗</span><b>Laporan</b></button>
+    <nav id="adminNav" class="nav hidden">
+      <button class="nav-btn active" data-view="admin-home"><span>◆</span><b>Overview</b></button>
+      <button class="nav-btn" data-view="admin-verification"><span>✓</span><b>Verifikasi</b><i id="verifyBadge">2</i></button>
+      <button class="nav-btn" data-view="admin-bookings"><span>◫</span><b>Booking</b></button>
+      <button class="nav-btn" data-view="admin-transactions"><span>Rp</span><b>Transaksi</b></button>
+      <button class="nav-btn" data-view="admin-penalty"><span>!</span><b>Denda</b></button>
     </nav>
-
-    <div class="sidebar-footer">
-      <div class="system-badge"><i></i><div><b>Demo System</b><span>Data lokal simulasi</span></div></div>
-    </div>
+    <div class="sidebar-foot"><span class="dot-online"></span><div><b>Prototype aktif</b><small>Data demo tersimpan di browser</small></div></div>
   </aside>
 
   <main class="main">
     <header class="topbar">
-      <div>
-        <span class="crumb" id="crumb">USER / BERANDA</span>
-        <h1 id="pageTitle">Selamat datang kembali</h1>
-      </div>
-      <div class="top-actions">
-        <button class="icon-btn" title="Notifikasi">🔔<span class="notif-dot"></span></button>
-        <div class="profile-chip"><div class="avatar">RT</div><div><b>Rayhandi</b><span id="roleLabel">User</span></div></div>
-      </div>
+      <div><span id="crumb" class="crumb">USER / BERANDA</span><h1 id="title">Booking lapangan tanpa ribet</h1></div>
+      <div class="top-actions"><button class="notif" id="notifBtn">🔔<i id="notifCount">2</i></button><div class="profile"><div class="avatar">RT</div><div><b>Rayhandi</b><span id="roleText">User</span></div></div></div>
     </header>
 
-    <section id="user-home" class="view active">
-      <div class="hero-grid">
-        <div class="hero-card">
-          <span class="eyebrow">BOOKING LEBIH PRAKTIS</span>
-          <h2>Main kapan saja,<br><em>jadwal tetap aman.</em></h2>
-          <p>Pilih lapangan, cek slot real-time, tambah perlengkapan, lalu bayar online atau langsung di lokasi.</p>
-          <div class="hero-actions">
-            <button class="btn primary" data-jump="booking">Booking sekarang</button>
-            <button class="btn soft" data-jump="my-bookings">Lihat booking saya</button>
-          </div>
-          <div class="hero-tags"><span>✓ Anti double-booking</span><span>✓ Online / offline</span><span>✓ Denda adaptif</span></div>
-        </div>
-        <div class="court-art">
-          <div class="court-lines"></div>
-          <div class="float-card top"><small>Slot terdekat</small><b>19:00 — 20:00</b><span>Futsal A</span></div>
-          <div class="float-card bottom"><small>Mulai dari</small><b>Rp100.000/jam</b><span>Weekday siang</span></div>
-        </div>
+    <section id="home" class="view active">
+      <div class="hero">
+        <div><span class="eyebrow">BOOKING • BAYAR • VERIFIKASI</span><h2>Pesan lapangan, upload bukti,<br><em>admin tinggal verifikasi.</em></h2><p>User tetap bertransaksi lewat website. Bukti transfer masuk ke antrean pemeriksaan, lalu admin memberi keputusan. Bot/asisten chat belum diaktifkan pada tahap ini.</p><div class="actions"><button class="btn primary" data-go="booking">Booking sekarang</button><button class="btn light" data-go="mybooking">Lihat booking saya</button></div><div class="trust-row"><span>✓ Slot ditahan saat checkout</span><span>✓ Anti bukti duplikat</span><span>✓ Audit verifikasi</span></div></div>
+        <div class="court-visual"><div class="court-line"></div><div class="floating top"><small>Slot favorit</small><b>19:00 — 22:00</b><span>Futsal A</span></div><div class="floating bottom"><small>Status pembayaran</small><b>Menunggu verifikasi</b><span>Admin akan memeriksa bukti</span></div></div>
       </div>
-
-      <div class="metric-grid four">
-        <div class="metric-card"><span>Booking aktif</span><b>2</b><small>1 sudah lunas</small></div>
-        <div class="metric-card"><span>Menunggu bayar</span><b>1</b><small>Berakhir 21:15</small></div>
-        <div class="metric-card"><span>Total transaksi</span><b>Rp865K</b><small>30 hari terakhir</small></div>
-        <div class="metric-card"><span>Reward</span><b>120 pts</b><small>Simulasi loyalti</small></div>
-      </div>
-
-      <div class="section-head"><div><span>BOOKING MENDATANG</span><h3>Jadwal kamu berikutnya</h3><p>Ringkasan booking yang paling dekat.</p></div><button class="btn ghost small" data-jump="my-bookings">Lihat semua</button></div>
-      <div class="upcoming-grid">
-        <article class="booking-ticket accent-green">
-          <div class="ticket-top"><div><span class="tag success">CONFIRMED</span><h4>Lapangan Futsal A</h4><p>Senin, 14 September 2026</p></div><b>#BK-260914-015</b></div>
-          <div class="ticket-details"><div><span>Waktu</span><b>19:00 — 21:00</b></div><div><span>Durasi</span><b>2 jam</b></div><div><span>Pembayaran</span><b>QRIS • Lunas</b></div><div><span>Total</span><b>Rp365.000</b></div></div>
-          <div class="ticket-actions"><button class="btn soft small" data-invoice="BK-260914-015">Lihat invoice</button><button class="btn primary small" data-jump="booking">Booking lagi</button></div>
-        </article>
-        <article class="info-panel">
-          <span class="eyebrow dark">STATUS LIVE</span>
-          <h4>Lapangan Futsal A</h4>
-          <div class="live-row"><div class="live-dot"></div><div><b>Slot kamu belum dimulai</b><span>Mulai dalam 1 jam 26 menit</span></div></div>
-          <div class="progress"><i style="width:26%"></i></div>
-          <p>Check-in dibuka 15 menit sebelum jadwal. QR booking tersedia setelah pembayaran terkonfirmasi.</p>
-        </article>
+      <div class="metrics"><div><span>Booking aktif</span><b id="mActive">2</b><small>1 menunggu verifikasi</small></div><div><span>Pembayaran hari ini</span><b>Rp1,48 jt</b><small>Online + transfer manual</small></div><div><span>Antrean verifikasi</span><b id="mQueue">2</b><small>Perlu keputusan admin</small></div><div><span>Lapangan tersedia</span><b>4 / 6</b><small>Untuk malam ini</small></div></div>
+      <div class="two-col">
+        <div class="card"><div class="section-title"><div><span>ALUR WEBSITE</span><h3>Dari booking sampai confirmed</h3></div></div><div class="flow"><div class="flow-step done"><i>1</i><div><b>Pilih jadwal</b><span>Lapangan, tanggal, jam, durasi.</span></div></div><div class="flow-step done"><i>2</i><div><b>Checkout</b><span>Identitas, alamat, perlengkapan.</span></div></div><div class="flow-step"><i>3</i><div><b>Upload bukti transfer</b><span>Nominal + referensi + screenshot.</span></div></div><div class="flow-step"><i>4</i><div><b>Verifikasi admin</b><span>Approve / tolak setelah dana dicek.</span></div></div><div class="flow-step"><i>5</i><div><b>Booking confirmed</b><span>Invoice dan status user diperbarui.</span></div></div></div></div>
+        <div class="card"><div class="section-title"><div><span>BOOKING TERDEKAT</span><h3>BK-260915-021</h3></div><span class="status waiting">WAITING PAYMENT</span></div><div class="summary-list"><div><span>Lapangan</span><b>Futsal A</b></div><div><span>Jadwal</span><b>20 Sep • 19:00–22:00</b></div><div><span>Durasi</span><b>3 jam</b></div><div><span>Total</span><b>Rp515.000</b></div></div><button class="btn primary full" data-go="payments">Lanjut pembayaran</button></div>
       </div>
     </section>
 
     <section id="booking" class="view">
-      <div class="section-head"><div><span>BOOKING LAPANGAN</span><h3>Pilih jadwal yang tersedia</h3><p>Pilih tanggal, lapangan, lalu klik slot hijau untuk lanjut ke checkout.</p></div><div class="date-control"><button>‹</button><b>14 Sep 2026</b><button>›</button></div></div>
-
-      <div class="booking-layout">
-        <aside class="filter-card card">
-          <label>Kategori olahraga</label>
-          <div class="filter-chips"><button class="active">Semua</button><button>Futsal</button><button>Badminton</button><button>Basket</button></div>
-          <label>Lapangan</label>
-          <div id="courtList" class="court-list"></div>
-          <div class="filter-note"><b>Harga dinamis</b><p>Harga malam dan weekend dapat berbeda sesuai aturan admin.</p></div>
-        </aside>
-
-        <div class="card schedule-card">
-          <div class="schedule-top">
-            <div><h4 id="selectedCourtName">Lapangan Futsal A</h4><p id="selectedCourtMeta">Futsal • Indoor • Vinyl Pro</p></div>
-            <div class="legend"><span><i class="dot free"></i>Tersedia</span><span><i class="dot pending"></i>Pending</span><span><i class="dot booked"></i>Booked</span><span><i class="dot maint"></i>Maintenance</span></div>
-          </div>
-          <div class="week-strip" id="weekStrip"></div>
-          <div class="slot-grid" id="slotGrid"></div>
-          <div class="availability-note"><b>Aturan bentrok:</b> slot tidak dapat dipilih jika jam yang diminta bertabrakan dengan booking aktif, pending yang belum kedaluwarsa, atau maintenance.</div>
+      <div class="section-head"><div><span>LANGKAH 1</span><h2>Pilih jadwal booking</h2><p>Pilih lapangan, tanggal, jam mulai, dan durasi. Slot akan diperiksa supaya tidak bentrok.</p></div><div class="mini-status"><i></i> Jadwal demo aktif</div></div>
+      <div class="booking-grid">
+        <div class="card filter-panel">
+          <label>Jenis olahraga</label><div class="chips"><button class="active">Futsal</button><button>Badminton</button><button>Basket</button></div>
+          <label>Lapangan</label><div class="court-list" id="courtList"></div>
+          <label>Tanggal</label><input id="bookingDate" type="date" value="2026-09-20" />
+          <div class="input-row"><div><label>Jam mulai</label><select id="startTime"><option>18:00</option><option selected>19:00</option><option>20:00</option><option>21:00</option></select></div><div><label>Durasi</label><select id="duration"><option>1</option><option>2</option><option selected>3</option><option>4</option></select></div></div>
+        </div>
+        <div class="card schedule-panel">
+          <div class="panel-top"><div><span>JADWAL MINGGU INI</span><h3 id="courtTitle">Lapangan Futsal A</h3><p>Indoor • Vinyl Pro • Rp150.000/jam</p></div><div class="legend"><span><i class="free"></i>Tersedia</span><span><i class="busy"></i>Booked</span><span><i class="pending-dot"></i>Pending</span></div></div>
+          <div class="week" id="week"></div><div class="slots" id="slots"></div>
+          <div class="selection-bar"><div><small>Pilihan saat ini</small><b id="selectionText">20 Sep 2026 • 19:00–22:00 • 3 jam</b></div><div><small>Estimasi lapangan</small><b id="courtPrice">Rp450.000</b></div><button class="btn primary" id="continueCheckout">Lanjut checkout</button></div>
         </div>
       </div>
-
-      <div class="section-head compact"><div><span>REKOMENDASI</span><h3>Lapangan populer</h3></div></div>
-      <div class="venue-grid" id="venueGrid"></div>
     </section>
 
-    <section id="my-bookings" class="view">
-      <div class="section-head"><div><span>RIWAYAT BOOKING</span><h3>Booking saya</h3><p>Pantau status lapangan, pembayaran, check-in, dan denda.</p></div><button class="btn primary small" data-jump="booking">+ Booking baru</button></div>
-      <div class="status-tabs"><button class="active">Semua <b>6</b></button><button>Aktif <b>2</b></button><button>Menunggu <b>1</b></button><button>Selesai <b>3</b></button></div>
-      <div class="booking-list" id="userBookingList"></div>
-    </section>
-
-    <section id="user-transactions" class="view">
-      <div class="section-head"><div><span>KEUANGAN</span><h3>Riwayat transaksi</h3><p>Pembayaran online dan offline ditampilkan terpisah dan transparan.</p></div><button class="btn ghost small">Unduh laporan</button></div>
-      <div class="metric-grid three">
-        <div class="metric-card"><span>Total dibayar</span><b>Rp865.000</b><small>6 transaksi</small></div>
-        <div class="metric-card"><span>Online</span><b>Rp665.000</b><small>QRIS & Virtual Account</small></div>
-        <div class="metric-card"><span>Offline</span><b>Rp200.000</b><small>Bayar di lokasi</small></div>
+    <section id="checkout" class="view">
+      <div class="section-head"><div><span>LANGKAH 2</span><h2>Checkout booking</h2><p>Lengkapi data pemesan dan pilih perlengkapan sebelum membuat invoice.</p></div><span class="status info">SLOT DITAHAN 15 MENIT</span></div>
+      <div class="checkout-grid">
+        <div class="stack">
+          <div class="card form-card"><div class="section-title"><div><span>DATA PEMESAN</span><h3>Identitas & kontak</h3></div></div><div class="form-grid"><div><label>Nama lengkap</label><input id="name" value="Rayhandi Tenri" /></div><div><label>No. WhatsApp</label><input id="phone" value="081234567890" /></div><div><label>Email</label><input id="email" value="rayhandi@example.com" /></div><div><label>Alamat</label><input id="address" value="Tangerang, Banten" /></div></div></div>
+          <div class="card"><div class="section-title"><div><span>PERLENGKAPAN</span><h3>Tambahan opsional</h3></div></div><div id="equipmentList" class="equipment-list"></div></div>
+          <div class="card"><div class="section-title"><div><span>CATATAN</span><h3>Permintaan khusus</h3></div></div><textarea id="note" placeholder="Contoh: siapkan bola sebelum jam bermain."></textarea></div>
+        </div>
+        <aside class="card order-card"><span>RINGKASAN BOOKING</span><h3>Futsal A</h3><div class="order-hero"><b id="orderDate">20 September 2026</b><span id="orderTime">19:00 — 22:00</span></div><div class="price-lines"><div><span>Lapangan × 3 jam</span><b id="sumCourt">Rp450.000</b></div><div><span>Perlengkapan</span><b id="sumEquipment">Rp65.000</b></div><div><span>Biaya admin</span><b>Rp0</b></div><div class="total"><span>Total</span><b id="grandTotal">Rp515.000</b></div></div><label class="check"><input type="checkbox" id="agree" checked/><span>Saya menyetujui jadwal dan data booking.</span></label><button class="btn primary full" id="createInvoice">Buat booking & invoice</button><button class="btn link full" data-go="booking">← Ubah jadwal</button></aside>
       </div>
-      <div class="card table-card"><table><thead><tr><th>ID Transaksi</th><th>Tanggal</th><th>Booking</th><th>Metode</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="userTransactionRows"></tbody></table></div>
+    </section>
+
+    <section id="payments" class="view">
+      <div class="section-head"><div><span>LANGKAH 3</span><h2>Pembayaran & bukti transfer</h2><p>Transfer sesuai total invoice. Bukti yang diupload belum otomatis dianggap lunas.</p></div><span id="paymentPageStatus" class="status waiting">AWAITING PAYMENT</span></div>
+      <div class="payment-grid">
+        <div class="stack">
+          <div class="card bank-card"><div class="section-title"><div><span>TRANSFER MANUAL</span><h3>Rekening tujuan</h3></div></div><div class="bank-row"><div class="bank-logo">BCA</div><div><span>Bank Central Asia</span><b>123 456 7890</b><small>a.n. Arena Sport</small></div><button class="btn light small" data-copy="1234567890">Salin</button></div><div class="amount-box"><span>Nominal yang harus dibayar</span><b id="invoiceAmount">Rp515.000</b><small>Transfer dengan nominal yang sama agar pengecekan lebih mudah.</small></div></div>
+          <div class="card upload-card"><div class="section-title"><div><span>UPLOAD BUKTI</span><h3>Kirim tanda transfer</h3></div><span class="security-label">PRE-SCREEN</span></div><div class="transfer-meta"><div><label>Nominal transfer</label><input id="transferAmount" type="number" value="515000" /></div><div><label>Bank / e-wallet pengirim</label><select id="senderBank"><option>BCA</option><option>BRI</option><option>Mandiri</option><option>BNI</option><option>DANA</option><option>GoPay</option></select></div><div><label>No. referensi transaksi</label><input id="reference" placeholder="Contoh: 260915ABC123" /></div></div>
+            <label id="dropZone" class="drop-zone"><input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp" hidden/><div class="upload-icon">⇧</div><b>Upload screenshot / foto bukti transfer</b><span>JPG, PNG, WEBP • maks. 5 MB</span><button type="button" class="btn light small" id="pickFile">Pilih file</button></label>
+            <div id="filePreview" class="file-preview hidden"></div>
+            <div class="screening-info"><b>Pengecekan awal prototype</b><p>Sistem mengecek format/resolusi file, kesesuaian nominal, nomor referensi, dan fingerprint file untuk mendeteksi bukti yang pernah dipakai. Ini <strong>bukan</strong> bukti bahwa uang sudah masuk rekening.</p></div>
+            <button id="submitProof" class="btn primary full">Kirim bukti untuk diverifikasi</button>
+          </div>
+        </div>
+        <aside class="card verification-card"><span>STATUS PEMBAYARAN</span><h3 id="verifyTitle">Belum ada bukti</h3><div class="timeline" id="paymentTimeline"></div><div id="screeningResult" class="screening-result neutral"><b>Belum dianalisis</b><p>Upload bukti transfer untuk menjalankan pre-screening.</p></div><div class="invoice-mini"><div><span>Invoice</span><b id="paymentInvoiceId">#BK-260915-021</b></div><div><span>Total</span><b id="paymentTotal">Rp515.000</b></div></div></aside>
+      </div>
+    </section>
+
+    <section id="mybooking" class="view">
+      <div class="section-head"><div><span>BOOKING SAYA</span><h2>Status & riwayat booking</h2><p>Status pembayaran dan keputusan admin tampil di sini.</p></div><button class="btn primary" data-go="booking">+ Booking baru</button></div><div id="userBookings" class="booking-cards"></div>
     </section>
 
     <section id="admin-home" class="view">
-      <div class="section-head"><div><span>OPERASIONAL HARI INI</span><h3>Dashboard admin</h3><p>Ringkasan booking, penggunaan lapangan, pendapatan, dan risiko keterlambatan.</p></div><button class="btn primary small" data-jump="admin-bookings">+ Booking manual</button></div>
-      <div class="metric-grid four">
-        <div class="metric-card"><span>Booking hari ini</span><b>27</b><small>+12% vs kemarin</small></div>
-        <div class="metric-card"><span>Pendapatan</span><b>Rp4,85jt</b><small>Online Rp3,6jt</small></div>
-        <div class="metric-card"><span>Lapangan dipakai</span><b>3 / 6</b><small>50% okupansi saat ini</small></div>
-        <div class="metric-card"><span>Potensi denda</span><b>2</b><small>Perlu perhatian</small></div>
-      </div>
-      <div class="admin-grid">
-        <div class="card panel-card">
-          <div class="panel-title"><div><span>JADWAL LIVE</span><h4>Sedang berlangsung</h4></div><button class="btn ghost tiny" data-jump="admin-schedule">Buka kalender</button></div>
-          <div id="liveSchedule" class="live-schedule"></div>
-        </div>
-        <div class="card panel-card">
-          <div class="panel-title"><div><span>PENDAPATAN 7 HARI</span><h4>Tren transaksi</h4></div><b class="growth">+18,4%</b></div>
-          <div class="mini-chart" id="revenueChart"></div>
-          <div class="chart-legend"><span><i></i>Online</span><span><i class="muted"></i>Offline</span></div>
-        </div>
-      </div>
-      <div class="admin-grid">
-        <div class="card panel-card"><div class="panel-title"><div><span>PERLENGKAPAN</span><h4>Stok kritis</h4></div></div><div id="criticalStock"></div></div>
-        <div class="card panel-card"><div class="panel-title"><div><span>AKSI CEPAT</span><h4>Operasional</h4></div></div><div class="quick-actions"><button data-jump="admin-bookings">Konfirmasi booking</button><button data-jump="admin-equipment">Update stok</button><button data-jump="admin-penalty">Kelola denda</button><button data-jump="admin-transactions">Cek pembayaran</button></div></div>
-      </div>
+      <div class="section-head"><div><span>ADMIN OPERATIONS</span><h2>Overview hari ini</h2><p>Fokus utama: booking aktif, dana yang perlu diverifikasi, dan status transaksi.</p></div><span class="status success">SYSTEM ONLINE</span></div>
+      <div class="metrics"><div><span>Booking hari ini</span><b>18</b><small>14 confirmed</small></div><div><span>Menunggu verifikasi</span><b id="adminQueueMetric">2</b><small>Bukti sudah diupload</small></div><div><span>Revenue confirmed</span><b>Rp3,42 jt</b><small>Tidak termasuk pending</small></div><div><span>Denda aktif</span><b>1</b><small>Rp20.000</small></div></div>
+      <div class="two-col"><div class="card"><div class="section-title"><div><span>PERLU TINDAKAN</span><h3>Antrean pembayaran</h3></div><button class="btn light small" data-go="admin-verification">Buka semua</button></div><div id="adminQueueHome"></div></div><div class="card"><div class="section-title"><div><span>JADWAL LIVE</span><h3>Lapangan malam ini</h3></div></div><div class="live-list"><div><i class="green"></i><div><b>Futsal A • 19:00–22:00</b><span>Rayhandi • Pending verification</span></div></div><div><i></i><div><b>Badminton 1 • 19:00–20:00</b><span>Dina • Confirmed</span></div></div><div><i></i><div><b>Futsal B • 20:00–22:00</b><span>Budi • Confirmed</span></div></div></div></div></div>
     </section>
 
-    <section id="admin-schedule" class="view">
-      <div class="section-head"><div><span>KALENDER OPERASIONAL</span><h3>Jadwal semua lapangan</h3><p>Lihat booking, pending, maintenance, dan slot kosong dalam satu tampilan.</p></div><div class="toolbar"><button class="btn ghost small">Hari</button><button class="btn soft small">Minggu</button><button class="btn ghost small">+ Maintenance</button></div></div>
-      <div class="card calendar-wrap" id="adminCalendar"></div>
+    <section id="admin-verification" class="view">
+      <div class="section-head"><div><span>PAYMENT REVIEW</span><h2>Verifikasi pembayaran</h2><p>Pre-screening membantu menyaring, tetapi keputusan final tetap berdasarkan pengecekan dana oleh admin.</p></div><div class="toolbar"><button class="btn light small">Pending</button><button class="btn light small">Riwayat</button></div></div>
+      <div id="verificationQueue" class="verification-queue"></div>
     </section>
 
-    <section id="admin-bookings" class="view">
-      <div class="section-head"><div><span>MANAJEMEN BOOKING</span><h3>Semua booking</h3><p>Konfirmasi, check-in, selesaikan, batalkan, atau lihat detail transaksi.</p></div><div class="toolbar"><button class="btn ghost small">Filter</button><button class="btn primary small">+ Booking manual</button></div></div>
-      <div class="filter-bar"><input placeholder="Cari nama / kode booking"/><select><option>Semua status</option><option>Confirmed</option><option>Pending</option><option>Completed</option></select><select><option>Semua lapangan</option><option>Futsal A</option><option>Futsal B</option></select><button class="btn soft small">Terapkan</button></div>
-      <div class="card table-card"><table><thead><tr><th>Booking</th><th>User</th><th>Lapangan</th><th>Jadwal</th><th>Pembayaran</th><th>Denda</th><th>Status</th><th></th></tr></thead><tbody id="adminBookingRows"></tbody></table></div>
-    </section>
+    <section id="admin-bookings" class="view"><div class="section-head"><div><span>BOOKING MANAGEMENT</span><h2>Semua booking</h2><p>Status booking terpisah dari status pembayaran.</p></div></div><div class="card table-wrap"><table><thead><tr><th>Booking</th><th>User</th><th>Lapangan</th><th>Jadwal</th><th>Payment</th><th>Booking</th><th>Total</th></tr></thead><tbody id="adminBookingTable"></tbody></table></div></section>
 
-    <section id="admin-equipment" class="view">
-      <div class="section-head"><div><span>INVENTARIS</span><h3>Perlengkapan</h3><p>Kelola stok, harga sewa, kondisi barang, dan ketersediaan berbasis waktu booking.</p></div><button class="btn primary small">+ Tambah perlengkapan</button></div>
-      <div class="metric-grid four"><div class="metric-card"><span>Total item</span><b>86</b><small>7 kategori</small></div><div class="metric-card"><span>Sedang disewa</span><b>23</b><small>26,7% dari stok</small></div><div class="metric-card"><span>Stok kritis</span><b>3</b><small>Perlu restock</small></div><div class="metric-card"><span>Rusak / servis</span><b>4</b><small>Tidak dapat disewa</small></div></div>
-      <div id="equipmentGrid" class="equipment-grid"></div>
-    </section>
+    <section id="admin-transactions" class="view"><div class="section-head"><div><span>TRANSACTION LEDGER</span><h2>Transaksi</h2><p>Riwayat keputusan pembayaran dan audit admin.</p></div></div><div class="card table-wrap"><table><thead><tr><th>ID</th><th>Booking</th><th>Metode</th><th>Nominal</th><th>Status</th><th>Waktu</th></tr></thead><tbody id="transactionTable"></tbody></table></div></section>
 
-    <section id="admin-transactions" class="view">
-      <div class="section-head"><div><span>TRANSAKSI</span><h3>Pembayaran & settlement</h3><p>Pantau transaksi online, offline, pending, gagal, refund, dan denda.</p></div><button class="btn ghost small">Export CSV</button></div>
-      <div class="metric-grid four"><div class="metric-card"><span>Gross hari ini</span><b>Rp4,85jt</b><small>27 booking</small></div><div class="metric-card"><span>Online paid</span><b>Rp3,60jt</b><small>74,2%</small></div><div class="metric-card"><span>Offline paid</span><b>Rp1,05jt</b><small>21,6%</small></div><div class="metric-card"><span>Outstanding</span><b>Rp200K</b><small>3 transaksi</small></div></div>
-      <div class="card table-card"><table><thead><tr><th>Transaksi</th><th>Booking</th><th>Pelanggan</th><th>Metode</th><th>Pokok</th><th>Denda</th><th>Total</th><th>Status</th></tr></thead><tbody id="adminTransactionRows"></tbody></table></div>
-    </section>
-
-    <section id="admin-penalty" class="view">
-      <div class="section-head"><div><span>ATURAN DENDA</span><h3>Denda adaptif ON / OFF</h3><p>Denda dapat aktif otomatis saat keterlambatan mengganggu booking berikutnya, atau dimatikan saat kondisi lapang.</p></div><span class="tag success" id="penaltyGlobalBadge">GLOBAL ON</span></div>
-      <div class="penalty-grid">
-        <div class="card penalty-settings">
-          <div class="setting-row main-setting"><div><b>Denda keterlambatan lapangan</b><span>Aturan utama overtime</span></div><button id="globalPenaltyToggle" class="toggle on" aria-label="Toggle denda"><i></i></button></div>
-          <div class="sub-setting"><span>Mode perhitungan</span><div class="segmented light"><button class="active" data-penalty-mode="adaptive">Otomatis adaptif</button><button data-penalty-mode="manual">Manual admin</button></div></div>
-          <div class="setting-form"><label>Toleransi keterlambatan<input id="graceMinutes" type="number" value="5"/><small>menit</small></label><label>Nominal denda<input id="penaltyAmount" type="number" value="10000"/><small>rupiah</small></label><label>Per interval<input id="penaltyInterval" type="number" value="10"/><small>menit</small></label><label>Maksimum denda<input id="penaltyMax" type="number" value="100000"/><small>rupiah</small></label></div>
-          <div class="rule-box"><b>Logika adaptif</b><code>IF actual_end &gt; booking_end + tolerance<br>AND next_booking_start &lt; actual_end<br>THEN penalty = ON<br><br>ELSE penalty = OFF</code></div>
-        </div>
-        <div class="card penalty-case">
-          <div class="panel-title"><div><span>SIMULASI KASUS</span><h4>#BK-260914-019</h4></div><span class="tag danger" id="caseStatus">DENDA AKTIF</span></div>
-          <div class="customer-line"><div class="avatar">AP</div><div><b>Andika Pratama</b><span>Lapangan Futsal A</span></div></div>
-          <div class="case-timeline"><div><span>19:00</span><p>Booking dimulai</p></div><div><span>20:00</span><p>Waktu booking berakhir</p></div><div class="danger-line"><span>20:17</span><p>Selesai aktual (+17 menit)</p></div><div><span>20:00</span><p>Booking berikutnya sudah mulai</p></div></div>
-          <div class="penalty-total"><div><span>Denda terhitung</span><small id="penaltyCalcText">2 interval × Rp10.000</small></div><b id="penaltyTotal">Rp20.000</b></div>
-          <div class="case-actions"><button class="btn ghost" id="waivePenalty">Bebaskan denda</button><button class="btn primary" id="confirmPenalty">Konfirmasi denda</button></div>
-        </div>
-      </div>
-      <div class="card table-card"><div class="panel-title"><div><span>RIWAYAT AUDIT</span><h4>Perubahan denda</h4></div></div><table><thead><tr><th>Waktu</th><th>Booking</th><th>Aksi</th><th>Nominal</th><th>Oleh</th><th>Alasan</th></tr></thead><tbody id="auditRows"></tbody></table></div>
-    </section>
-
-    <section id="admin-reports" class="view">
-      <div class="section-head"><div><span>LAPORAN</span><h3>Performa bisnis</h3><p>Ringkasan okupansi, pendapatan, metode pembayaran, dan kontribusi perlengkapan.</p></div><div class="toolbar"><button class="btn ghost small">1 Sep — 14 Sep</button><button class="btn primary small">Export PDF</button></div></div>
-      <div class="metric-grid four"><div class="metric-card"><span>Revenue</span><b>Rp38,4jt</b><small>+14,8% periode lalu</small></div><div class="metric-card"><span>Booking</span><b>214</b><small>Rata-rata 15/hari</small></div><div class="metric-card"><span>Okupansi</span><b>68,7%</b><small>Prime time 86%</small></div><div class="metric-card"><span>Equipment revenue</span><b>Rp4,2jt</b><small>10,9% dari revenue</small></div></div>
-      <div class="report-grid"><div class="card panel-card"><div class="panel-title"><div><span>OKUPANSI LAPANGAN</span><h4>Pemakaian per venue</h4></div></div><div id="occupancyBars" class="bars"></div></div><div class="card panel-card"><div class="panel-title"><div><span>METODE PEMBAYARAN</span><h4>Komposisi transaksi</h4></div></div><div class="donut-wrap"><div class="donut"><div>74%<span>Online</span></div></div><div class="donut-legend"><p><i></i>Online <b>74%</b></p><p><i class="orange"></i>Offline <b>22%</b></p><p><i class="gray"></i>Outstanding <b>4%</b></p></div></div></div></div>
-    </section>
+    <section id="admin-penalty" class="view"><div class="section-head"><div><span>PENALTY CONTROL</span><h2>Denda adaptif</h2><p>Fitur denda tetap tersedia dan terpisah dari verifikasi pembayaran.</p></div></div><div class="two-col"><div class="card"><div class="section-title"><div><span>PENGATURAN</span><h3>Denda keterlambatan</h3></div><button id="penaltyToggle" class="toggle on">ON</button></div><div class="setting-row"><span>Mode</span><b>Otomatis adaptif</b></div><div class="setting-row"><span>Toleransi</span><b>5 menit</b></div><div class="setting-row"><span>Tarif</span><b>Rp10.000 / 10 menit</b></div><div class="setting-row"><span>Maksimum</span><b>Rp100.000</b></div></div><div class="card"><div class="section-title"><div><span>CONTOH LIVE</span><h3>Booking #BK-260915-010</h3></div><span class="status danger">OVERDUE</span></div><div class="summary-list"><div><span>Seharusnya selesai</span><b>20:00</b></div><div><span>Selesai aktual</span><b>20:17</b></div><div><span>Booking berikutnya</span><b>20:00 • Terisi</b></div><div><span>Denda</span><b>Rp20.000</b></div></div></div></div></section>
   </main>
 </div>
 
-<div id="checkoutDrawer" class="drawer"><div class="drawer-backdrop" data-close="checkout"></div><div class="drawer-sheet"><button class="close-btn" data-close="checkout">×</button><span class="eyebrow dark">CHECKOUT BOOKING</span><h3>Konfirmasi pesanan</h3><div id="checkoutSummary" class="checkout-summary"></div><h4>Tambah perlengkapan</h4><div id="checkoutEquipment" class="checkout-equipment"></div><h4>Metode pembayaran</h4><div class="payment-grid" id="paymentGrid"><button class="active" data-pay="QRIS"><b>QRIS</b><span>Online realtime</span></button><button data-pay="Virtual Account"><b>Virtual Account</b><span>Online realtime</span></button><button data-pay="E-Wallet"><b>E-Wallet</b><span>Online realtime</span></button><button data-pay="Bayar di Lokasi"><b>Bayar di Lokasi</b><span>Offline / kasir</span></button></div><div id="checkoutTotals" class="totals"></div><button id="confirmBooking" class="btn primary full">Konfirmasi booking</button><p class="demo-note">Demo: pembayaran online belum terhubung ke gateway merchant asli.</p></div></div>
-
-<div id="invoiceModal" class="modal"><div class="modal-backdrop" data-close="invoice"></div><div class="modal-card"><button class="close-btn" data-close="invoice">×</button><div class="invoice-logo"><div class="brand-mark">A</div><div><b>ArenaBook</b><span>Invoice booking</span></div></div><div id="invoiceBody"></div><button class="btn primary full" id="printInvoice">Cetak / Simpan PDF</button></div></div>
-
+<div id="reviewModal" class="modal hidden"><div class="modal-card"><button class="modal-close" id="closeModal">×</button><span class="eyebrow dark">PAYMENT REVIEW</span><h2 id="modalTitle">Review pembayaran</h2><div id="modalBody"></div></div></div>
 <div id="toast" class="toast"></div>
 <script src="app.js"></script>
-<script src="assistant.js"></script>
 </body>
 </html>
