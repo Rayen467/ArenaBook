@@ -1,49 +1,39 @@
 # ArenaBook
 
-ArenaBook adalah demo sistem booking lapangan dan penyewaan perlengkapan olahraga dengan dua aktor: **User** dan **Admin**.
+Prototype web booking lapangan dan perlengkapan dengan 2 aktor: **User** dan **Admin**.
 
-## Fitur User
-- Dashboard dan booking mendatang
-- Pemilihan lapangan dan jadwal mingguan
-- Status slot: tersedia, pending, booked, maintenance
-- Checkout perlengkapan dengan stok simulasi
-- Pembayaran online (QRIS / VA / E-Wallet) dan offline (bayar di lokasi)
-- Riwayat booking
-- Riwayat transaksi
-- Invoice
+## Fokus versi ini
 
-## Fitur Admin
-- Dashboard operasional
-- Kalender semua lapangan
-- Manajemen booking
-- Inventaris perlengkapan
-- Monitoring transaksi
-- Denda adaptif ON/OFF
-- Override / pembebasan denda dengan audit trail
-- Laporan pendapatan, okupansi, dan metode pembayaran
+Versi ini sengaja **belum mengaktifkan bot/asisten chat**. Fondasi website dan alur pembayaran manual diselesaikan terlebih dahulu.
 
-## Arena Assistant — Prototype
-Prototype conversational automation sudah ditambahkan langsung ke ArenaBook.
+### User
+- Pilih lapangan, tanggal, jam, dan durasi.
+- Checkout dengan identitas dan alamat.
+- Tambah perlengkapan.
+- Invoice dan total otomatis.
+- Transfer manual.
+- Upload bukti transfer.
+- Isi nominal, bank/e-wallet pengirim, dan nomor referensi.
+- Melihat status: `AWAITING_PAYMENT` → `PROOF_SUBMITTED` → `PAID` → `CONFIRMED`.
 
-Kemampuan saat ini:
-- Membaca data booking, jadwal, transaksi, dan inventaris demo
-- Cek slot kosong melalui chat
-- Menyiapkan booking dan membuka checkout dari chat
-- Melihat booking dan status pembayaran
-- Cancel booking dengan pengecekan kepemilikan dan langkah konfirmasi
-- Menambah perlengkapan saat checkout
-- Mengaktifkan / menonaktifkan denda untuk mode Admin
-- Notification / Automation Center untuk event pembayaran, reminder jadwal, pembatalan, dan stok
-- Simulasi webhook pembayaran yang mengubah Pending → Paid → Confirmed
-- Navigasi halaman ArenaBook melalui perintah chat
+### Pre-screen bukti pembayaran
+Prototype tidak mengklaim bisa memastikan uang masuk hanya dari screenshot. Pre-screen hanya membantu admin dengan:
+- Validasi tipe/ukuran file gambar.
+- Kecocokan nominal dengan invoice.
+- Nomor referensi transaksi.
+- SHA-256 fingerprint untuk mendeteksi file bukti yang dipakai ulang pada booking berbeda.
 
-Versi prototype menggunakan **rule-based intent engine**, sehingga belum membutuhkan token AI berbayar. Layer AI natural-language dapat ditambahkan kemudian tanpa memberi model akses langsung ke database; aksi tetap harus melalui authorization dan action engine.
+Keputusan final tetap dilakukan admin setelah mengecek rekening/mutasi.
 
-## Denda Adaptif
-Denda dapat dinyalakan atau dimatikan. Pada mode adaptif, keterlambatan hanya menimbulkan denda jika melewati toleransi dan mengganggu booking berikutnya. Admin tetap dapat override atau membebaskan denda, dengan histori audit tetap tercatat.
+### Admin
+- Antrean pembayaran yang perlu diverifikasi.
+- Review hasil pre-screen.
+- Approve jika dana benar-benar masuk.
+- Reject bila bukti bermasalah.
+- Approve otomatis mengubah `payment = PAID` dan `booking = CONFIRMED`.
+- Audit log keputusan.
+- Tabel booking dan transaksi.
+- Denda adaptif ON/OFF tetap tersedia.
 
-## Status MVP
-Versi ini adalah **interactive front-end demo** tanpa database produksi. Pembayaran online dan webhook masih simulasi. Integrasi payment gateway, database produksi, WhatsApp, Telegram, Discord, Instagram Messaging, dan AI provider akan menjadi tahap berikutnya.
-
-## Deployment
-Project disiapkan sebagai static SPA agar ringan dan dapat dideploy langsung ke Vercel.
+## Catatan teknis
+Prototype memakai HTML/CSS/JavaScript tanpa dependency dan menyimpan state demo di `localStorage`. Untuk produksi, tahap berikutnya adalah backend/database persistent, object storage bukti pembayaran, autentikasi, audit log server-side, dan baru kemudian integrasi bot/asisten admin.
