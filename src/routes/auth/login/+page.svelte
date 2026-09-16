@@ -27,9 +27,9 @@
 
     <form method="POST" action={mode === 'login' ? '?/login' : '?/signup'} class="space-y-3">
       {#if mode === 'signup'}
-        <label class="block text-[10px] font-bold text-slate-500">Nama lengkap<input name="full_name" value={form?.fullName ?? ''} class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
+        <label class="block text-[10px] font-bold text-slate-500">Nama lengkap<input name="full_name" class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
       {/if}
-      <label class="block text-[10px] font-bold text-slate-500">Email<input name="email" type="email" value={form?.email ?? ''} autocomplete="email" class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
+      <label class="block text-[10px] font-bold text-slate-500">Email<input name="email" type="email" autocomplete="email" class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
       <label class="block text-[10px] font-bold text-slate-500">Password<input name="password" type="password" minlength="8" autocomplete={mode === 'login' ? 'current-password' : 'new-password'} class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
       <button disabled={!data.backendReady} class="mt-2 h-11 w-full rounded-xl bg-emerald-400 text-xs font-black text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">{mode === 'login' ? 'Masuk' : 'Daftar akun'}</button>
     </form>
