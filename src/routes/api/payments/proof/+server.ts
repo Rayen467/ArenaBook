@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
@@ -23,8 +22,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   if (!allowedTypes.has(proof.type)) return json({ error: 'Format bukti harus JPG, PNG, atau WEBP.' }, { status: 400 });
   if (proof.size > maxBytes) return json({ error: 'Ukuran bukti maksimal 5 MB.' }, { status: 400 });
 
-  const bytes = Buffer.from(await proof.arrayBuffer());
-  const sha256 = createHash('sha256').update(bytes).digest('hex');
+  const bytes = new Uint8Array(await proof.arrayBuffer());
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  const sha256 = Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+
   const safeName = proof.name.replace(/[^a-zA-Z0-9._-]/g, '-').slice(-120);
   const storagePath = `${user.id}/${bookingId}/${crypto.randomUUID()}-${safeName}`;
 
