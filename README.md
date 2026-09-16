@@ -1,77 +1,81 @@
-# ArenaBook — SvelteKit Prototype
+# ArenaBook
 
-ArenaBook sekarang dimigrasikan dari prototype HTML/JavaScript menjadi aplikasi **SvelteKit + TypeScript** dengan UI interaktif dan struktur komponen yang siap dikembangkan ke backend nyata.
+ArenaBook adalah sistem booking lapangan dan perlengkapan berbasis **SvelteKit + TypeScript + Tailwind CSS + Supabase**.
 
-## Frontend stack
+## Status
 
-- SvelteKit + TypeScript
-- Tailwind CSS v4 melalui `@tailwindcss/vite`
-- Komponen lokal bergaya shadcn-svelte (`Button`, `Card`, `Badge`)
-- Bits UI untuk dialog/sheet yang accessible
-- Motion untuk micro-animation dan staggered reveal
-- Lucide Svelte untuk icon
+Project sedang dimigrasikan dari prototype ke fondasi production:
 
-## Flow yang sudah ada
+- Supabase Auth untuk USER / ADMIN
+- PostgreSQL sebagai source of truth
+- anti-double-booking di level database
+- booking hold dan expiry
+- inventaris perlengkapan per slot
+- pembayaran manual dengan bukti transfer private
+- SHA-256 fingerprint untuk membantu mendeteksi bukti duplikat
+- verifikasi akhir oleh admin
+- Row Level Security (RLS)
+- audit log
+- denda adaptif / manual
 
-### User
-1. Pilih lapangan.
-2. Pilih tanggal dan slot tersedia.
-3. Atur durasi.
-4. Isi nama, WhatsApp, alamat.
-5. Tambah perlengkapan.
-6. Buat booking.
-7. Transfer manual.
-8. Upload bukti transfer + nominal + nomor referensi.
-9. Sistem melakukan pre-screen.
-10. Status menjadi `PENDING_VERIFICATION` sampai admin memutuskan.
+## Stack
 
-### Pre-screen bukti
+- SvelteKit 5
+- TypeScript
+- Tailwind CSS 4
+- Bits UI
+- Motion
+- Supabase PostgreSQL / Auth / Storage
+- Vercel
+- Docker Compose untuk development
 
-Prototype tidak mengklaim screenshot sebagai bukti bahwa dana pasti masuk. Sistem hanya membantu admin dengan:
-- mencocokkan nominal bukti dengan invoice;
-- mencatat nomor referensi;
-- membuat SHA-256 fingerprint file di browser;
-- mendeteksi fingerprint yang pernah digunakan booking lain;
-- meneruskan hasilnya ke antrean admin.
+## Environment
 
-### Admin
-- Dashboard ringkas.
-- Antrean verifikasi pembayaran.
-- Review nominal, fingerprint, referensi, dan file.
-- Approve: `payment = PAID` dan `booking = CONFIRMED`.
-- Reject: `payment = REJECTED` dan `booking = PAYMENT_ISSUE`.
-- Manajemen booking.
-- Inventaris prototype.
-- Denda adaptif ON/OFF + mode otomatis/manual.
+Salin `.env.example` menjadi `.env` untuk development atau masukkan environment variables yang sama ke Vercel:
 
-## Bot/asisten
+```env
+PUBLIC_SUPABASE_URL=
+PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SECRET_KEY=
+```
 
-Belum diaktifkan. Sesuai roadmap, bot menjadi lapisan penghubung admin setelah website, database, autentikasi, storage bukti, dan workflow pembayaran stabil.
+`SUPABASE_SECRET_KEY` bersifat opsional untuk fondasi saat ini dan **tidak boleh pernah** diberi prefix `PUBLIC_`.
 
-## Local development
+## Database
+
+Migration produksi berada di:
+
+```text
+supabase/migrations/20260916000100_arenabook_production.sql
+```
+
+Migration ini membuat schema booking, payment proof, RLS, storage policy, RPC booking/payment, seed venue/perlengkapan, dan constraint PostgreSQL untuk mencegah jadwal overlap pada lapangan yang sama.
+
+## Payment proof
+
+Bukti transfer bukan bukti mutlak dana sudah masuk. ArenaBook hanya melakukan pre-screening seperti nominal, nomor referensi, file validation, dan fingerprint SHA-256. Status `PAID` hanya diberikan setelah admin benar-benar memeriksa mutasi/rekening dan melakukan approve.
+
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-### Docker
+atau dengan Docker:
 
 ```bash
 docker compose up --build
 ```
 
-Buka `http://localhost:5173`.
+## Build verification
 
-> Docker dipakai untuk konsistensi environment development. Anti-double-booking nantinya tetap harus ditangani di PostgreSQL dengan transaksi/constraint, bukan hanya Docker.
+Setiap push ke `main` menjalankan GitHub Actions:
 
-## Production next step
+```text
+npm install
+npm run check
+npm run build
+```
 
-- PostgreSQL/Supabase
-- Auth user/admin
-- booking hold + expiry
-- exclusion constraint anti-overlap
-- object storage bukti pembayaran
-- audit log server-side
-- webhook/payment gateway saat akses merchant tersedia
-- Redis/queue hanya jika dibutuhkan untuk expiry/notifikasi/bot
+Vercel terhubung ke repository ini dan melakukan deployment otomatis dari branch `main`.
