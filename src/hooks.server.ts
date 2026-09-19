@@ -9,7 +9,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   const url = env.PUBLIC_SUPABASE_URL || FALLBACK_SUPABASE_URL;
   const key = env.PUBLIC_SUPABASE_PUBLISHABLE_KEY || FALLBACK_SUPABASE_PUBLISHABLE_KEY;
 
-  event.locals.supabase = createServerClient(url, key, {
+  const supabase = createServerClient(url, key, {
     cookies: {
       getAll: () => event.cookies.getAll(),
       setAll: (cookiesToSet) => {
@@ -20,8 +20,9 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
   });
 
+  event.locals.supabase = supabase;
   event.locals.getVerifiedUser = async () => {
-    const { data, error } = await event.locals.supabase.auth.getUser();
+    const { data, error } = await supabase.auth.getUser();
     if (error) return null;
     return data.user ?? null;
   };
