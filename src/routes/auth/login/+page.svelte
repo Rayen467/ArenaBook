@@ -29,9 +29,16 @@
       {#if mode === 'signup'}
         <label class="block text-[10px] font-bold text-slate-500">Nama lengkap<input name="full_name" class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
       {/if}
-      <label class="block text-[10px] font-bold text-slate-500">Email<input name="email" type="email" autocomplete="email" class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
+      <label class="block text-[10px] font-bold text-slate-500">Email<input name="email" type="email" autocomplete="email" value={form?.email ?? ''} class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
       <label class="block text-[10px] font-bold text-slate-500">Password<input name="password" type="password" minlength="8" autocomplete={mode === 'login' ? 'current-password' : 'new-password'} class="mt-1.5 h-11 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
       <button disabled={!data.backendReady} class="mt-2 h-11 w-full rounded-xl bg-emerald-400 text-xs font-black text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">{mode === 'login' ? 'Masuk' : 'Daftar akun'}</button>
+    </form>
+
+    <div class="my-5 flex items-center gap-3 text-[9px] font-bold uppercase tracking-wider text-slate-300"><span class="h-px flex-1 bg-slate-200"></span>Belum terverifikasi?<span class="h-px flex-1 bg-slate-200"></span></div>
+
+    <form method="POST" action="?/resend" class="space-y-2">
+      <label class="block text-[10px] font-bold text-slate-500">Email akun<input name="email" type="email" autocomplete="email" value={form?.email ?? ''} placeholder="nama@email.com" class="mt-1.5 h-10 w-full rounded-xl border border-slate-200 px-3 text-xs outline-none focus:border-emerald-400" /></label>
+      <button disabled={!data.backendReady} class="h-10 w-full rounded-xl border border-emerald-200 bg-emerald-50 text-[10px] font-black text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50">Kirim ulang email konfirmasi</button>
     </form>
   </div>
 </div>
