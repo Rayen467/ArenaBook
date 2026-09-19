@@ -1,8 +1,14 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { paymentProofKeyboard } from '$lib/server/admin-assistant';
+import { sendAdminNotification } from '$lib/server/telegram';
 
 const allowedTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const maxBytes = 5 * 1024 * 1024;
+
+function rupiah(value: number | string | null | undefined) {
+  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value ?? 0));
+}
 
 export const POST: RequestHandler = async ({ request, locals }) => {
   if (!locals.supabase) return json({ error: 'Backend belum dikonfigurasi.' }, { status: 503 });
@@ -52,6 +58,24 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     await locals.supabase.storage.from('payment-proofs').remove([storagePath]);
     return json({ error: error.message }, { status: 400 });
   }
+
+  const { data: booking } = await locals.supabase.from('bookings')
+    .select('id,booking_code,customer_name,total_amount,venue:venues(name)')
+    .eq('id', bookingId).maybeSingle();
+
+  const venue = Array.isArray((booking as any)?.venue) ? (booking as any)?.venue?.[0]?.name : (booking as any)?.venue?.name;
+  void sendAdminNotification([
+    '💳 BUKTI PEMBAYARAN MASUK',
+    '',
+    `${booking?.booking_code ?? bookingId} — ${booking?.customer_name ?? 'Customer'}`,
+    venue ?? 'Lapangan',
+    `Invoice: ${rupiah(booking?.total_amount)}`,
+    `Bukti: ${rupiah(declaredAmount)} ${data?.amount_matches ? '✅' : '⚠️'}`,
+    `Referensi: ${referenceNumber}`,
+    `Duplikat file: ${data?.is_duplicate ? 'TERDETEKSI ⚠️' : 'tidak'}`,
+    '',
+    'Cek mutasi rekening sebelum menekan Dana masuk.'
+  ].join('\n'), paymentProofKeyboard(bookingId));
 
   return json({ proof: data }, { status: 201 });
 };
