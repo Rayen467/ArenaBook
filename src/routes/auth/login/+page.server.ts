@@ -40,6 +40,22 @@ export const actions: Actions = {
     });
 
     if (error) return fail(400, { message: error.message, fullName, email });
-    return { success: true, message: 'Akun dibuat. Cek email untuk konfirmasi.' };
+    return { success: true, message: 'Akun dibuat. Cek email untuk konfirmasi.', email };
+  },
+
+  resend: async ({ request, locals, url }) => {
+    if (!locals.supabase) return fail(503, { message: 'Supabase belum dikonfigurasi di environment.' });
+    const form = await request.formData();
+    const email = String(form.get('email') ?? '').trim().toLowerCase();
+    if (!email) return fail(400, { message: 'Masukkan email yang ingin dikonfirmasi.' });
+
+    const { error } = await locals.supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: `${url.origin}/auth/confirm` }
+    });
+
+    if (error) return fail(400, { message: error.message, email });
+    return { success: true, message: 'Email konfirmasi baru sudah dikirim. Gunakan link yang paling baru.', email };
   }
 };
