@@ -10,7 +10,7 @@ create or replace function public.admin_assistant_review_payment(
 )
 returns jsonb
 language plpgsql
-security definer
+security invoker
 set search_path = public
 as $$
 declare
@@ -76,7 +76,7 @@ create or replace function public.admin_assistant_cancel_booking(
 )
 returns jsonb
 language plpgsql
-security definer
+security invoker
 set search_path = public
 as $$
 declare
