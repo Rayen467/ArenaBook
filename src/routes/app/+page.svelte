@@ -507,7 +507,7 @@
               <div class="flex max-w-full gap-2 overflow-x-auto pb-1">
                 {#each ['Semua', ...new Set(venues.map((venue) => venue.type))] as type}
                   <button type="button" onclick={() => selectedSport = type}
-                    class={\`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition \${selectedSport === type ? 'border-arena-950 bg-arena-950 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-400'}\`}>{type}</button>
+                    class={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition ${selectedSport === type ? 'border-arena-950 bg-arena-950 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-400'}`}>{type}</button>
                 {/each}
               </div>
             </div>
@@ -516,8 +516,8 @@
                 {#each visibleVenues as venue, idx}
                   <button type="button" onclick={() => { selectVenue(venue.id); }}
                     aria-pressed={selectedVenueId === venue.id}
-                    class={\`booking-venue-card group relative overflow-hidden rounded-[24px] border p-0 text-left transition-all duration-200 \${selectedVenueId === venue.id ? 'border-emerald-500 bg-white ring-[3px] ring-emerald-400/15' : 'border-slate-200 bg-white hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg'}\`}>
-                    <div class={\`booking-venue-graphic relative flex h-28 items-center justify-between overflow-hidden px-5 \${venue.type.toLowerCase().includes('futsal') ? 'booking-futsal' : venue.type.toLowerCase().includes('badminton') ? 'booking-badminton' : 'booking-basket'}\`}>
+                    class={`booking-venue-card group relative overflow-hidden rounded-[24px] border p-0 text-left transition-all duration-200 ${selectedVenueId === venue.id ? 'border-emerald-500 bg-white ring-[3px] ring-emerald-400/15' : 'border-slate-200 bg-white hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg'}`}>
+                    <div class={`booking-venue-graphic relative flex h-28 items-center justify-between overflow-hidden px-5 ${venue.type.toLowerCase().includes('futsal') ? 'booking-futsal' : venue.type.toLowerCase().includes('badminton') ? 'booking-badminton' : 'booking-basket'}`}>
                       <div class="relative z-10"><div class="text-[11px] font-bold uppercase tracking-[.17em] text-white/65">{venue.type}</div><div class="mt-1 text-2xl font-black tracking-[-.04em] text-white">{String(idx + 1).padStart(2,'0')}</div></div>
                       <div class="booking-court-outline absolute -right-5 -top-10 h-48 w-48 rotate-[28deg] rounded-[28px] border-[3px] border-white/20"></div>
                       <div class="relative z-10 grid size-12 place-items-center rounded-2xl border border-white/20 bg-white/10 text-2xl text-white backdrop-blur-sm">{venue.type.toLowerCase().includes('badminton') ? '🏸' : venue.type.toLowerCase().includes('basket') ? '🏀' : '⚽'}</div>
@@ -530,7 +530,7 @@
                       <div class="mt-2 flex items-center gap-2 text-xs text-slate-500"><Users size={13}/>{venue.capacity_min}–{venue.capacity_max} orang <span class="text-slate-300">•</span> {venue.surface || 'Lapangan olahraga'}</div>
                       <div class="mt-4 flex items-end justify-between border-t border-slate-100 pt-3">
                         <div><div class="text-[10px] text-slate-400">Mulai dari</div><div class="mt-0.5 text-base font-black text-emerald-700">{rupiah(venue.price_per_hour)}<span class="text-[11px] font-medium text-slate-400">/jam</span></div></div>
-                        <span class={\`rounded-full px-3 py-1.5 text-[11px] font-black \${selectedVenueId === venue.id ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-700'}\`}>{selectedVenueId === venue.id ? 'Dipilih' : 'Pilih'}</span>
+                        <span class={`rounded-full px-3 py-1.5 text-[11px] font-black ${selectedVenueId === venue.id ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-700'}`}>{selectedVenueId === venue.id ? 'Dipilih' : 'Pilih'}</span>
                       </div>
                     </div>
                   </button>
@@ -561,10 +561,10 @@
                   <div class="grid grid-cols-7 gap-1 border-b border-slate-100 pb-3">{#each weekdayLabels as label}<div class="py-1 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">{label}</div>{/each}</div>
                   <div class="mt-3 grid grid-cols-7 gap-1 sm:gap-2">
                     {#each calendarCells as cell}
-                      <button type="button" disabled={cell.isPast} onclick={() => selectDate(cell)} aria-pressed={selectedDate === cell.key} aria-label={\`\${cell.day} \${monthNames[cell.date.getMonth()]} \${cell.date.getFullYear()}\`}
-                        class={\`relative flex min-h-[48px] flex-col items-center justify-center rounded-xl border text-sm font-extrabold transition sm:min-h-[62px] \${selectedDate === cell.key ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-600/15' : cell.isPast ? 'cursor-not-allowed border-transparent text-slate-300' : cell.inCurrentMonth ? 'border-slate-100 bg-slate-50/70 hover:border-emerald-400 hover:bg-emerald-50' : 'border-transparent text-slate-400 hover:bg-slate-50'}\`}>
+                      <button type="button" disabled={cell.isPast} onclick={() => selectDate(cell)} aria-pressed={selectedDate === cell.key} aria-label={`${cell.day} ${monthNames[cell.date.getMonth()]} ${cell.date.getFullYear()}`}
+                        class={`relative flex min-h-[48px] flex-col items-center justify-center rounded-xl border text-sm font-extrabold transition sm:min-h-[62px] ${selectedDate === cell.key ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-600/15' : cell.isPast ? 'cursor-not-allowed border-transparent text-slate-300' : cell.inCurrentMonth ? 'border-slate-100 bg-slate-50/70 hover:border-emerald-400 hover:bg-emerald-50' : 'border-transparent text-slate-400 hover:bg-slate-50'}`}>
                         {cell.day}
-                        {#if cell.isToday}<span class={\`absolute bottom-1 size-1 rounded-full \${selectedDate === cell.key ? 'bg-white' : 'bg-emerald-500'}\`}></span>{/if}
+                        {#if cell.isToday}<span class={`absolute bottom-1 size-1 rounded-full ${selectedDate === cell.key ? 'bg-white' : 'bg-emerald-500'}`}></span>{/if}
                       </button>
                     {/each}
                   </div>
@@ -577,7 +577,7 @@
                   <h3 class="mt-1 text-lg font-black">Berapa lama mau main?</h3>
                   <div class="mt-4 grid grid-cols-4 gap-2">
                     {#each [1,2,3,4] as hours}
-                      <button type="button" onclick={() => { duration = hours; loadAvailability(); }} class={\`rounded-xl border px-2 py-3 text-xs font-black transition \${duration === hours ? 'border-arena-950 bg-arena-950 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-400'}\`}>{hours} jam</button>
+                      <button type="button" onclick={() => { duration = hours; loadAvailability(); }} class={`rounded-xl border px-2 py-3 text-xs font-black transition ${duration === hours ? 'border-arena-950 bg-arena-950 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-400'}`}>{hours} jam</button>
                     {/each}
                   </div>
                   <p class="mt-3 text-xs leading-5 text-slate-500">Harga lapangan {rupiah(venueSubtotal)} untuk {duration} jam. Perlengkapan bisa ditambah saat checkout.</p>
@@ -589,7 +589,7 @@
                       {@const state = slotState(time, duration)}
                       <button type="button" disabled={availabilityBusy || state !== 'free'} onclick={() => selectedSlot = time}
                         aria-pressed={selectedSlot === time && state === 'free'}
-                        class={\`flex min-h-12 flex-col items-center justify-center rounded-xl border px-2 py-2 text-xs font-black transition \${state === 'free' ? selectedSlot === time ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-400' : state === 'pending' ? 'cursor-not-allowed border-amber-100 bg-amber-50 text-amber-600' : state === 'booked' ? 'cursor-not-allowed border-rose-100 bg-rose-50 text-rose-500' : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300'}\`}>
+                        class={`flex min-h-12 flex-col items-center justify-center rounded-xl border px-2 py-2 text-xs font-black transition ${state === 'free' ? selectedSlot === time ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-400' : state === 'pending' ? 'cursor-not-allowed border-amber-100 bg-amber-50 text-amber-600' : state === 'booked' ? 'cursor-not-allowed border-rose-100 bg-rose-50 text-rose-500' : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300'}`}>
                         <span>{time}</span><span class="mt-0.5 text-[9px] font-semibold opacity-70">{state === 'free' ? 'Kosong' : state === 'pending' ? 'Ditahan' : state === 'booked' ? 'Terisi' : 'Tutup'}</span>
                       </button>
                     {/each}
