@@ -81,6 +81,7 @@
   let proofFile = $state<File | null>(null);
   let busy = $state(false);
   let flash = $state('');
+  let mobileMenuOpen = $state(false);
 
   let bankName = $state((data.paymentSettings as any)?.bank_name ?? '');
   let accountNumber = $state((data.paymentSettings as any)?.account_number ?? '');
@@ -653,14 +654,45 @@
       <button onclick={() => view = 'admin-home'} class={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition ${view === 'admin-home' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><LayoutDashboard size={16}/>Admin</button>
       <button onclick={() => view = 'verification'} class={`relative flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition ${view === 'verification' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><ShieldCheck size={16}/>Verifikasi{#if reviewQueue.length}<span class="absolute right-3 top-2 size-2 rounded-full bg-rose-500"></span>{/if}</button>
       <button onclick={() => view = 'admin-bookings'} class={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition ${view === 'admin-bookings' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><ClipboardList size={16}/>Booking</button>
-      <button onclick={() => view = 'booking'} class={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition ${view === 'booking' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><CalendarDays size={16}/>Lapangan</button>
+      <button type="button" onclick={() => mobileMenuOpen = true} class="flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold text-slate-500"><Settings size={16}/>Menu</button>
     {:else}
       <button onclick={() => view = 'booking'} class={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition ${view === 'booking' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><CalendarDays size={16}/>Booking</button>
       <button onclick={() => view = 'my-bookings'} disabled={!user} class={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition disabled:opacity-35 ${view === 'my-bookings' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><ClipboardList size={16}/>Pesanan</button>
       <button onclick={() => view = 'transactions'} disabled={!user} class={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold transition disabled:opacity-35 ${view === 'transactions' ? 'bg-arena-950 text-emerald-300' : 'text-slate-400'}`}><Wallet size={16}/>Transaksi</button>
-      <button onclick={() => goto('/auth/login')} class="flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold text-slate-400"><UserRound size={16}/>{user ? 'Akun' : 'Masuk'}</button>
+      <button type="button" onclick={() => mobileMenuOpen = true} class="flex flex-col items-center gap-1 rounded-2xl px-2 py-2.5 text-[10px] font-extrabold text-slate-500"><Settings size={16}/>Menu</button>
     {/if}
   </nav>
+  {#if mobileMenuOpen}
+    <div class="fixed inset-0 z-[55] lg:hidden">
+      <button type="button" aria-label="Tutup menu" onclick={() => mobileMenuOpen = false} class="absolute inset-0 bg-arena-950/65 backdrop-blur-sm"></button>
+      <div class="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-y-auto rounded-t-[28px] bg-[#f8faf8] p-5 pb-8 shadow-2xl">
+        <div class="mb-5 flex items-start justify-between"><div><div class="text-[11px] font-black uppercase tracking-widest text-emerald-700">ArenaBook</div><h2 class="mt-1 text-xl font-black">Menu & akun</h2></div><button type="button" aria-label="Tutup" onclick={() => mobileMenuOpen = false} class="grid size-10 place-items-center rounded-xl border border-slate-200 bg-white"><X size={17}/></button></div>
+        {#if user}
+          <div class="mb-5 flex items-center gap-3 rounded-2xl bg-arena-950 p-4 text-white"><div class="grid size-11 place-items-center rounded-xl bg-emerald-300/15 text-emerald-200"><UserRound size={20}/></div><div class="min-w-0"><div class="truncate text-sm font-black">{profile?.full_name || user.email}</div><div class="mt-0.5 text-[11px] font-semibold text-white/45">{profile?.role ?? 'USER'}</div></div></div>
+        {:else}
+          <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><p class="text-xs leading-5 text-emerald-900">Masuk atau daftar untuk menyelesaikan booking lapangan.</p><button type="button" onclick={() => { mobileMenuOpen = false; goto('/auth/login'); }} class="mt-3 rounded-xl bg-arena-950 px-5 py-3 text-xs font-black text-white">Masuk / Daftar</button></div>
+        {/if}
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" onclick={() => { view = 'booking'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><CalendarDays size={17} class="text-emerald-700"/> Cari lapangan</button>
+          {#if user}
+            <button type="button" onclick={() => { view = 'my-bookings'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><ClipboardList size={17} class="text-emerald-700"/> Booking saya</button>
+            <button type="button" onclick={() => { view = 'transactions'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><Wallet size={17} class="text-emerald-700"/> Transaksi</button>
+          {/if}
+          {#if isAdmin}
+            <button type="button" onclick={() => { view = 'admin-home'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><LayoutDashboard size={17} class="text-emerald-700"/> Dashboard admin</button>
+            <button type="button" onclick={() => { view = 'verification'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><ShieldCheck size={17} class="text-emerald-700"/> Verifikasi</button>
+            <button type="button" onclick={() => { view = 'admin-bookings'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><ClipboardList size={17} class="text-emerald-700"/> Semua booking</button>
+            <button type="button" onclick={() => { view = 'equipment'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><Package size={17} class="text-emerald-700"/> Perlengkapan</button>
+            <button type="button" onclick={() => { view = 'payment-settings'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><Banknote size={17} class="text-emerald-700"/> Rekening</button>
+            <button type="button" onclick={() => { view = 'penalty'; mobileMenuOpen = false; }} class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-4 text-left text-xs font-bold"><AlertTriangle size={17} class="text-emerald-700"/> Aturan denda</button>
+          {/if}
+        </div>
+        {#if user}
+          <form method="POST" action="/auth/logout" class="mt-4"><button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs font-black text-rose-700"><LogOut size={16}/> Keluar akun</button></form>
+        {/if}
+      </div>
+    </div>
+  {/if}
 </div>
 
 {#if checkoutOpen}
