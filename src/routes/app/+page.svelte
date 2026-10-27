@@ -82,6 +82,7 @@
   let busy = $state(false);
   let flash = $state('');
   let mobileMenuOpen = $state(false);
+  let notificationOpen = $state(false);
 
   let bankName = $state((data.paymentSettings as any)?.bank_name ?? '');
   let accountNumber = $state((data.paymentSettings as any)?.account_number ?? '');
@@ -453,7 +454,29 @@
     <header class="arena-topbar sticky top-0 z-30 flex h-[76px] items-center justify-between border-b border-slate-200/70 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
       <div><div class="text-[11px] font-black uppercase tracking-[.17em] text-emerald-700/70">ArenaBook / {view.replaceAll('-', ' ')}</div><div class="mt-0.5 text-sm font-extrabold tracking-tight">{isAdmin && view.startsWith('admin') || ['verification','equipment','payment-settings','penalty'].includes(view) ? 'Admin Console' : 'Booking Center'}</div></div>
       <div class="flex items-center gap-2">
-        <button aria-label="Notifikasi" class="relative grid size-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-500"><Bell size={17}/>{#if reviewQueue.length}<span class="absolute right-2 top-2 size-1.5 rounded-full bg-rose-500"></span>{/if}</button>
+        <div class="relative">
+          <button type="button" aria-label="Notifikasi" aria-expanded={notificationOpen} onclick={() => notificationOpen = !notificationOpen} class="relative grid size-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:border-emerald-300 hover:text-emerald-700"><Bell size={17}/>{#if isAdmin && reviewQueue.length}<span class="absolute right-2 top-2 size-1.5 rounded-full bg-rose-500"></span>{/if}</button>
+          {#if notificationOpen}
+            <div class="absolute right-0 top-12 z-50 w-[min(90vw,335px)] rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_22px_60px_-24px_rgba(15,23,42,.4)]">
+              <div class="mb-3 flex items-center justify-between"><strong class="text-sm">Aktivitas terbaru</strong><button type="button" aria-label="Tutup notifikasi" onclick={() => notificationOpen = false}><X size={15} class="text-slate-400"/></button></div>
+              {#if isAdmin}
+                <p class="text-xs leading-5 text-slate-500">{reviewQueue.length ? `${reviewQueue.length} pembayaran menunggu pemeriksaan.` : 'Belum ada bukti pembayaran yang perlu diverifikasi.'}</p>
+                <button type="button" onclick={() => { view = 'verification'; notificationOpen = false; }} class="mt-3 w-full rounded-xl bg-arena-950 px-3 py-2.5 text-xs font-bold text-white">Lihat verifikasi</button>
+              {:else if user}
+                {#if myBookings.length}
+                  <p class="text-xs font-bold">{myBookings[0].venue?.name ?? myBookings[0].booking_code}</p>
+                  <p class="mt-1 text-xs leading-5 text-slate-500">Booking: {myBookings[0].status} • Pembayaran: {myBookings[0].payment_status}</p>
+                {:else}
+                  <p class="text-xs text-slate-500">Belum ada aktivitas booking.</p>
+                {/if}
+                <button type="button" onclick={() => { view = 'my-bookings'; notificationOpen = false; }} class="mt-3 w-full rounded-xl bg-arena-950 px-3 py-2.5 text-xs font-bold text-white">Lihat booking saya</button>
+              {:else}
+                <p class="text-xs leading-5 text-slate-500">Masuk untuk melihat aktivitas akun dan status booking.</p>
+                <button type="button" onclick={() => goto('/auth/login')} class="mt-3 w-full rounded-xl bg-arena-950 px-3 py-2.5 text-xs font-bold text-white">Masuk</button>
+              {/if}
+            </div>
+          {/if}
+        </div>
         {#if user}
           <div class="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 sm:flex"><div class="grid size-7 place-items-center rounded-lg bg-arena-900 text-[11px] font-black text-emerald-300"><UserRound size={13}/></div><div><div class="max-w-32 truncate text-xs font-bold">{profile?.full_name || user.email}</div><div class="text-[10px] text-slate-400">{profile?.role ?? 'USER'}</div></div></div>
           <form method="POST" action="/auth/logout"><button aria-label="Keluar" class="grid size-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:text-rose-600"><LogOut size={16}/></button></form>
