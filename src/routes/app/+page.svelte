@@ -56,6 +56,8 @@
 
   let view = $state(isAdmin ? 'admin-home' : 'booking');
   let selectedVenueId = $state(venues[0]?.id ?? '');
+  let selectedSport = $state('Semua');
+  const visibleVenues = $derived(selectedSport === 'Semua' ? venues : venues.filter((venue) => venue.type === selectedSport));
   let selectedDate = $state(todayKey);
   let calendarYear = $state(todayYear);
   let calendarMonth = $state(todayMonth - 1);
@@ -195,6 +197,7 @@
     if (startMinutes < minutes(selectedVenue.open_time) || endMinutes > minutes(selectedVenue.close_time)) return 'closed';
 
     const candidateStart = new Date(`${selectedDate}T${time}:00+07:00`).getTime();
+    if (candidateStart <= Date.now()) return 'closed';
     const candidateEnd = candidateStart + hours * 60 * 60 * 1000;
     let state: 'free' | 'booked' | 'pending' = 'free';
     for (const item of availability) {
@@ -220,7 +223,7 @@
       await goto('/auth/login');
       return;
     }
-    if (slotState(selectedSlot, duration) !== 'free') {
+    if (availabilityBusy || slotState(selectedSlot, duration) !== 'free') {
       notify('Slot atau durasi yang dipilih sudah tidak tersedia.');
       await loadAvailability();
       return;
@@ -461,33 +464,150 @@
 
     <div class="arena-content mx-auto max-w-[1520px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       {#if view === 'booking'}
-        <section class="space-y-5">
-          <div class="overflow-hidden rounded-[30px] border border-emerald-300/10 bg-arena-950 p-5 text-white shadow-[0_28px_80px_-48px_rgba(7,17,13,.8)] sm:p-7">
-            <div class="grid gap-6 xl:grid-cols-[1.3fr_.7fr] xl:items-end">
+        <section class="space-y-6">
+          <div class="booking-hero relative overflow-hidden rounded-[30px] px-5 py-7 text-white sm:px-8 sm:py-9">
+            <div class="pointer-events-none absolute -right-12 -top-28 size-[340px] rounded-full border-[65px] border-white/[.055] sm:right-10 sm:size-[430px]"></div>
+            <div class="pointer-events-none absolute bottom-[-120px] right-[18%] size-[240px] rotate-45 border-[40px] border-emerald-300/[.075]"></div>
+            <div class="relative grid gap-7 xl:grid-cols-[1.25fr_.75fr] xl:items-end">
               <div>
-                <div class="inline-flex items-center gap-2 rounded-full border border-emerald-300/10 bg-emerald-300/[.07] px-3 py-1.5 text-[11px] font-black uppercase tracking-[.14em] text-emerald-300">
-                  <CalendarDays size={13}/> Booking lapangan
+                <div class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold text-emerald-100 backdrop-blur-sm"><span class="size-1.5 rounded-full bg-emerald-300"></span> BOOKING LAPANGAN ONLINE</div>
+                <h1 class="mt-5 max-w-2xl text-[30px] font-black leading-[1.1] tracking-[-.045em] sm:text-4xl lg:text-[44px]">Saatnya main.<br/><span class="text-emerald-300">Lapangan udah siap.</span></h1>
+                <p class="mt-4 max-w-xl text-sm leading-7 text-white/65">Pilih lapangan favorit, temukan jam kosong, dan pesan langsung. Nggak perlu bolak-balik tanya jadwal.</p>
+                <div class="mt-6 flex flex-wrap gap-2 text-[11px] font-semibold text-white/80">
+                  <span class="rounded-full border border-white/15 bg-white/[.07] px-3 py-1.5">{venues.length} pilihan lapangan</span>
+                  <span class="rounded-full border border-white/15 bg-white/[.07] px-3 py-1.5">Jadwal diperbarui langsung</span>
+                  <span class="rounded-full border border-white/15 bg-white/[.07] px-3 py-1.5">Pembayaran diverifikasi admin</span>
                 </div>
-                <h1 class="mt-4 max-w-3xl text-3xl font-black leading-tight tracking-[-.045em] sm:text-4xl">Pilih waktu main. Sisanya biar ArenaBook yang urus.</h1>
-                <p class="mt-3 max-w-2xl text-sm leading-6 text-white/45">Cek jadwal real-time, pilih lapangan, tambah perlengkapan, lalu selesaikan booking dari satu alur yang jelas.</p>
               </div>
-              <div class="grid grid-cols-3 gap-2">
-                <div class="rounded-2xl border border-white/[.07] bg-white/[.045] p-3"><div class="text-[10px] font-black uppercase tracking-wider text-white/30">Lapangan</div><div class="mt-2 text-2xl font-black text-emerald-300">{venues.length}</div><div class="mt-1 text-[10px] text-white/35">aktif</div></div>
-                <div class="rounded-2xl border border-white/[.07] bg-white/[.045] p-3"><div class="text-[10px] font-black uppercase tracking-wider text-white/30">Jam</div><div class="mt-2 text-2xl font-black text-emerald-300">08–23</div><div class="mt-1 text-[10px] text-white/35">operasional</div></div>
-                <div class="rounded-2xl border border-white/[.07] bg-white/[.045] p-3"><div class="text-[10px] font-black uppercase tracking-wider text-white/30">Status</div><div class="mt-2 flex items-center gap-1.5 text-sm font-black text-emerald-300"><span class="size-2 rounded-full bg-emerald-400"></span>Live</div><div class="mt-1 text-[10px] text-white/35">database</div></div>
+              <div class="booking-hero-summary rounded-[22px] border border-white/15 bg-white/[.10] p-5 backdrop-blur-md">
+                <div class="mb-4 flex items-center justify-between text-xs font-semibold text-white/65"><span>Rencana main kamu</span><CalendarDays size={17}/></div>
+                <div class="text-xl font-black tracking-tight">{selectedVenue?.name ?? 'Pilih lapangan'}</div>
+                <div class="mt-2 text-sm text-white/70">{selectedDateLabel}</div>
+                <div class="mt-4 grid grid-cols-2 gap-3 border-t border-white/15 pt-4">
+                  <div><div class="text-[10px] uppercase tracking-wider text-white/50">Mulai</div><div class="mt-1 text-lg font-black">{selectedSlot} WIB</div></div>
+                  <div><div class="text-[10px] uppercase tracking-wider text-white/50">Durasi</div><div class="mt-1 text-lg font-black">{duration} jam</div></div>
+                </div>
               </div>
-            </div>
-            <div class="mt-5 flex flex-wrap gap-4 border-t border-white/[.06] pt-4 text-[11px] text-white/40">
-              <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-emerald-400"></span>Tersedia</span>
-              <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-amber-400"></span>Ditahan</span>
-              <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-rose-400"></span>Sudah dibooking</span>
             </div>
           </div>
-          <div class="grid gap-4 xl:grid-cols-[270px_minmax(0,1fr)]">
-            <Card class="h-max p-3"><div class="px-2 pb-2 pt-1 text-[11px] font-black uppercase tracking-[.13em] text-slate-400">Lapangan</div><div class="space-y-1">{#each venues as venue}<button onclick={() => selectVenue(venue.id)} class={`w-full rounded-2xl border p-3 text-left transition ${selectedVenueId === venue.id ? 'border-emerald-200 bg-emerald-50' : 'border-transparent hover:bg-slate-50'}`}><div class="text-sm font-black">{venue.name}</div><div class="mt-1 text-[11px] text-slate-400">{venue.type} • {venue.surface || '-'}</div><div class="mt-2 flex items-center justify-between"><span class="text-xs font-bold">{rupiah(venue.price_per_hour)}<span class="font-normal text-slate-400">/jam</span></span><span class="text-[10px] text-slate-400">{venue.capacity_min}–{venue.capacity_max} orang</span></div></button>{/each}</div></Card>
-            <div class="space-y-4">
-              <Card class="overflow-hidden"><div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between"><div><div class="text-[11px] font-black uppercase tracking-wider text-emerald-700">Kalender</div><h2 class="mt-1 text-base font-black">{monthNames[calendarMonth]} {calendarYear}</h2></div><div class="flex items-center gap-2"><button aria-label="Bulan sebelumnya" onclick={prevMonth} class="grid size-9 place-items-center rounded-xl border border-slate-200 bg-white"><ChevronLeft size={15}/></button><button onclick={() => { calendarYear = todayYear; calendarMonth = todayMonth - 1; selectedDate = todayKey; loadAvailability(); }} class="h-9 rounded-xl border border-slate-200 bg-white px-3 text-[11px] font-bold">Hari ini</button><button aria-label="Bulan berikutnya" onclick={nextMonth} class="grid size-9 place-items-center rounded-xl border border-slate-200 bg-white"><ChevronRight size={15}/></button></div></div><div class="p-3 sm:p-5"><div class="grid grid-cols-7 border-b border-slate-100 pb-2">{#each weekdayLabels as label}<div class="py-1 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">{label}</div>{/each}</div><div class="mt-2 grid grid-cols-7 gap-1.5 sm:gap-2">{#each calendarCells as cell}<button disabled={cell.isPast} onclick={() => selectDate(cell)} class={`min-h-[66px] rounded-xl border p-2 text-left transition sm:min-h-[78px] ${selectedDate === cell.key ? 'border-emerald-400 bg-emerald-50 ring-2 ring-emerald-400/10' : cell.isPast ? 'cursor-not-allowed border-transparent bg-slate-50/60 text-slate-300' : cell.inCurrentMonth ? 'border-slate-200 bg-white hover:border-emerald-300' : 'border-slate-100 bg-slate-50/60 text-slate-400'}`}><div class="flex items-start justify-between"><span class={`text-sm font-black ${cell.isToday ? 'grid size-6 place-items-center rounded-full bg-arena-950 text-white' : ''}`}>{cell.day}</span>{#if selectedDate === cell.key}<CheckCircle size={11} class="text-emerald-600"/>{/if}</div><div class="mt-3 hidden text-[10px] text-slate-400 sm:block">Cek jadwal</div></button>{/each}</div><div class="mt-4 rounded-2xl bg-slate-50 px-4 py-3"><div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tanggal dipilih</div><div class="mt-1 text-sm font-black capitalize">{selectedDateLabel}</div></div></div></Card>
-              <Card class="overflow-hidden"><div class="flex items-center justify-between border-b border-slate-100 p-5"><div><div class="text-[11px] font-black uppercase tracking-wider text-emerald-700">Jadwal jam</div><h2 class="mt-1 text-base font-black">{selectedVenue?.name ?? 'Pilih lapangan'}</h2></div>{#if availabilityBusy}<RefreshCw size={15} class="animate-spin text-emerald-600"/>{/if}</div><div class="p-5"><div class="grid grid-cols-3 gap-2 sm:grid-cols-5 xl:grid-cols-6">{#each slotTimes as time}{@const state = slotState(time, duration)}<button disabled={state !== 'free'} onclick={() => selectedSlot = time} class={`rounded-xl border px-2 py-3 text-left transition ${state === 'free' ? selectedSlot === time ? 'border-emerald-400 bg-emerald-50 ring-2 ring-emerald-400/10' : 'border-slate-200 bg-white hover:border-emerald-300' : state === 'booked' ? 'cursor-not-allowed border-rose-100 bg-rose-50 text-rose-500' : state === 'pending' ? 'cursor-not-allowed border-amber-100 bg-amber-50 text-amber-600' : 'cursor-not-allowed border-slate-100 bg-slate-100 text-slate-400'}`}><div class="text-sm font-black">{time}</div><div class="mt-1 text-[10px] capitalize opacity-70">{state === 'free' ? selectedSlot === time ? 'Dipilih' : 'Tersedia' : state === 'pending' ? 'Ditahan' : state}</div></button>{/each}</div><div class="mt-5 flex flex-col gap-3 rounded-2xl bg-arena-950 p-4 text-white sm:flex-row sm:items-center sm:justify-between"><div><div class="text-[11px] text-white/40">Pilihan</div><div class="mt-1 text-xs font-bold">{selectedVenue?.name} • {selectedDate} • {selectedSlot} • {duration} jam</div></div><Button onclick={startCheckout}>Lanjut checkout <ChevronRight size={14}/></Button></div></div></Card>
+
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="flex items-center gap-3 rounded-[20px] border border-emerald-200 bg-emerald-50 p-4"><span class="grid size-9 shrink-0 place-items-center rounded-xl bg-emerald-700 text-xs font-black text-white">01</span><div><div class="text-xs font-black text-emerald-950">Pilih lapangan</div><div class="text-[11px] text-emerald-700/70">Olahraga & fasilitas</div></div></div>
+            <div class="flex items-center gap-3 rounded-[20px] border border-slate-200 bg-white/80 p-4"><span class="grid size-9 shrink-0 place-items-center rounded-xl bg-slate-100 text-xs font-black text-slate-600">02</span><div><div class="text-xs font-black">Tentukan jadwal</div><div class="text-[11px] text-slate-500">Tanggal, jam & durasi</div></div></div>
+            <div class="flex items-center gap-3 rounded-[20px] border border-slate-200 bg-white/80 p-4"><span class="grid size-9 shrink-0 place-items-center rounded-xl bg-slate-100 text-xs font-black text-slate-600">03</span><div><div class="text-xs font-black">Konfirmasi pesanan</div><div class="text-[11px] text-slate-500">Data diri & pembayaran</div></div></div>
+          </div>
+
+          <section aria-label="Pilih lapangan">
+            <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <div class="text-[11px] font-black uppercase tracking-[.15em] text-emerald-700">01 / PILIH LAPANGAN</div>
+                <h2 class="mt-1 text-2xl font-black tracking-tight">Mau main apa hari ini?</h2>
+                <p class="mt-1 text-sm text-slate-500">Pilih lapangan yang cocok buat tim kamu.</p>
+              </div>
+              <div class="flex max-w-full gap-2 overflow-x-auto pb-1">
+                {#each ['Semua', ...new Set(venues.map((venue) => venue.type))] as type}
+                  <button type="button" onclick={() => selectedSport = type}
+                    class={\`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition \${selectedSport === type ? 'border-arena-950 bg-arena-950 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-400'}\`}>{type}</button>
+                {/each}
+              </div>
+            </div>
+            {#if visibleVenues.length}
+              <div class="grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+                {#each visibleVenues as venue, idx}
+                  <button type="button" onclick={() => { selectVenue(venue.id); }}
+                    aria-pressed={selectedVenueId === venue.id}
+                    class={\`booking-venue-card group relative overflow-hidden rounded-[24px] border p-0 text-left transition-all duration-200 \${selectedVenueId === venue.id ? 'border-emerald-500 bg-white ring-[3px] ring-emerald-400/15' : 'border-slate-200 bg-white hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg'}\`}>
+                    <div class={\`booking-venue-graphic relative flex h-28 items-center justify-between overflow-hidden px-5 \${venue.type.toLowerCase().includes('futsal') ? 'booking-futsal' : venue.type.toLowerCase().includes('badminton') ? 'booking-badminton' : 'booking-basket'}\`}>
+                      <div class="relative z-10"><div class="text-[11px] font-bold uppercase tracking-[.17em] text-white/65">{venue.type}</div><div class="mt-1 text-2xl font-black tracking-[-.04em] text-white">{String(idx + 1).padStart(2,'0')}</div></div>
+                      <div class="booking-court-outline absolute -right-5 -top-10 h-48 w-48 rotate-[28deg] rounded-[28px] border-[3px] border-white/20"></div>
+                      <div class="relative z-10 grid size-12 place-items-center rounded-2xl border border-white/20 bg-white/10 text-2xl text-white backdrop-blur-sm">{venue.type.toLowerCase().includes('badminton') ? '🏸' : venue.type.toLowerCase().includes('basket') ? '🏀' : '⚽'}</div>
+                    </div>
+                    <div class="px-5 pb-5 pt-4">
+                      <div class="flex items-start justify-between gap-3">
+                        <h3 class="text-base font-black leading-tight tracking-tight">{venue.name}</h3>
+                        {#if selectedVenueId === venue.id}<CheckCircle size={19} class="shrink-0 text-emerald-600"/>{:else}<span class="mt-1 size-4 shrink-0 rounded-full border-2 border-slate-200"></span>{/if}
+                      </div>
+                      <div class="mt-2 flex items-center gap-2 text-xs text-slate-500"><Users size={13}/>{venue.capacity_min}–{venue.capacity_max} orang <span class="text-slate-300">•</span> {venue.surface || 'Lapangan olahraga'}</div>
+                      <div class="mt-4 flex items-end justify-between border-t border-slate-100 pt-3">
+                        <div><div class="text-[10px] text-slate-400">Mulai dari</div><div class="mt-0.5 text-base font-black text-emerald-700">{rupiah(venue.price_per_hour)}<span class="text-[11px] font-medium text-slate-400">/jam</span></div></div>
+                        <span class={\`rounded-full px-3 py-1.5 text-[11px] font-black \${selectedVenueId === venue.id ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-700'}\`}>{selectedVenueId === venue.id ? 'Dipilih' : 'Pilih'}</span>
+                      </div>
+                    </div>
+                  </button>
+                {/each}
+              </div>
+            {:else}
+              <div class="rounded-[24px] border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">Belum ada lapangan untuk kategori ini.</div>
+            {/if}
+          </section>
+
+          <section aria-label="Pilih jadwal" class="space-y-4">
+            <div>
+              <div class="text-[11px] font-black uppercase tracking-[.15em] text-emerald-700">02 / JADWAL MAIN</div>
+              <h2 class="mt-1 text-2xl font-black tracking-tight">Pilih waktu yang pas.</h2>
+              <p class="mt-1 text-sm text-slate-500">Jam yang sudah dipesan tidak bisa dipilih ulang.</p>
+            </div>
+            <div class="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(285px,.55fr)]">
+              <Card class="overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 p-5">
+                  <div><div class="text-[11px] font-black uppercase tracking-wider text-emerald-700">Pilih tanggal</div><h3 class="mt-1 text-xl font-black">{monthNames[calendarMonth]} {calendarYear}</h3></div>
+                  <div class="flex items-center gap-2">
+                    <button type="button" aria-label="Bulan sebelumnya" onclick={prevMonth} class="grid size-10 place-items-center rounded-xl border border-slate-200 bg-white hover:border-emerald-400"><ChevronLeft size={17}/></button>
+                    <button type="button" onclick={() => { calendarYear = todayYear; calendarMonth = todayMonth - 1; selectedDate = todayKey; loadAvailability(); }} class="h-10 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold hover:border-emerald-400">Hari ini</button>
+                    <button type="button" aria-label="Bulan berikutnya" onclick={nextMonth} class="grid size-10 place-items-center rounded-xl border border-slate-200 bg-white hover:border-emerald-400"><ChevronRight size={17}/></button>
+                  </div>
+                </div>
+                <div class="p-4 sm:p-5">
+                  <div class="grid grid-cols-7 gap-1 border-b border-slate-100 pb-3">{#each weekdayLabels as label}<div class="py-1 text-center text-[10px] font-black uppercase tracking-wider text-slate-400">{label}</div>{/each}</div>
+                  <div class="mt-3 grid grid-cols-7 gap-1 sm:gap-2">
+                    {#each calendarCells as cell}
+                      <button type="button" disabled={cell.isPast} onclick={() => selectDate(cell)} aria-pressed={selectedDate === cell.key} aria-label={\`\${cell.day} \${monthNames[cell.date.getMonth()]} \${cell.date.getFullYear()}\`}
+                        class={\`relative flex min-h-[48px] flex-col items-center justify-center rounded-xl border text-sm font-extrabold transition sm:min-h-[62px] \${selectedDate === cell.key ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-600/15' : cell.isPast ? 'cursor-not-allowed border-transparent text-slate-300' : cell.inCurrentMonth ? 'border-slate-100 bg-slate-50/70 hover:border-emerald-400 hover:bg-emerald-50' : 'border-transparent text-slate-400 hover:bg-slate-50'}\`}>
+                        {cell.day}
+                        {#if cell.isToday}<span class={\`absolute bottom-1 size-1 rounded-full \${selectedDate === cell.key ? 'bg-white' : 'bg-emerald-500'}\`}></span>{/if}
+                      </button>
+                    {/each}
+                  </div>
+                  <div class="mt-4 flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3 text-xs text-slate-600"><CalendarDays size={15} class="shrink-0 text-emerald-700"/><span class="font-bold capitalize">{selectedDateLabel}</span></div>
+                </div>
+              </Card>
+              <div class="space-y-4">
+                <Card class="p-5">
+                  <div class="text-[11px] font-black uppercase tracking-wider text-emerald-700">Durasi</div>
+                  <h3 class="mt-1 text-lg font-black">Berapa lama mau main?</h3>
+                  <div class="mt-4 grid grid-cols-4 gap-2">
+                    {#each [1,2,3,4] as hours}
+                      <button type="button" onclick={() => { duration = hours; loadAvailability(); }} class={\`rounded-xl border px-2 py-3 text-xs font-black transition \${duration === hours ? 'border-arena-950 bg-arena-950 text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-emerald-400'}\`}>{hours} jam</button>
+                    {/each}
+                  </div>
+                  <p class="mt-3 text-xs leading-5 text-slate-500">Harga lapangan {rupiah(venueSubtotal)} untuk {duration} jam. Perlengkapan bisa ditambah saat checkout.</p>
+                </Card>
+                <Card class="p-5">
+                  <div class="mb-3 flex items-center justify-between"><div><div class="text-[11px] font-black uppercase tracking-wider text-emerald-700">Jam mulai</div><h3 class="mt-1 text-lg font-black">Pilih slot tersedia</h3></div>{#if availabilityBusy}<RefreshCw size={16} class="animate-spin text-emerald-600"/>{/if}</div>
+                  <div class="grid grid-cols-3 gap-2 sm:grid-cols-5 xl:grid-cols-3 2xl:grid-cols-4">
+                    {#each slotTimes as time}
+                      {@const state = slotState(time, duration)}
+                      <button type="button" disabled={availabilityBusy || state !== 'free'} onclick={() => selectedSlot = time}
+                        aria-pressed={selectedSlot === time && state === 'free'}
+                        class={\`flex min-h-12 flex-col items-center justify-center rounded-xl border px-2 py-2 text-xs font-black transition \${state === 'free' ? selectedSlot === time ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-400' : state === 'pending' ? 'cursor-not-allowed border-amber-100 bg-amber-50 text-amber-600' : state === 'booked' ? 'cursor-not-allowed border-rose-100 bg-rose-50 text-rose-500' : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300'}\`}>
+                        <span>{time}</span><span class="mt-0.5 text-[9px] font-semibold opacity-70">{state === 'free' ? 'Kosong' : state === 'pending' ? 'Ditahan' : state === 'booked' ? 'Terisi' : 'Tutup'}</span>
+                      </button>
+                    {/each}
+                  </div>
+                  <div class="mt-4 flex flex-wrap gap-3 text-[10px] font-medium text-slate-500"><span><span class="mr-1 text-emerald-600">●</span>Kosong</span><span><span class="mr-1 text-amber-500">●</span>Ditahan</span><span><span class="mr-1 text-rose-500">●</span>Terisi</span></div>
+                </Card>
+              </div>
+            </div>
+          </section>
+
+          <div class="sticky bottom-[84px] z-20 overflow-hidden rounded-[24px] border border-emerald-300/10 bg-arena-950 px-5 py-4 text-white shadow-[0_22px_65px_-28px_rgba(7,17,13,.8)] sm:px-6 lg:bottom-5">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div class="min-w-0">
+                <div class="text-[10px] font-black uppercase tracking-wider text-emerald-300">Ringkasan pesanan</div>
+                <div class="mt-1 truncate text-sm font-black">{selectedVenue?.name ?? 'Pilih lapangan'} <span class="font-normal text-white/45">• {selectedDate} • {selectedSlot}</span></div>
+                <div class="mt-1 text-xl font-black text-emerald-300">{rupiah(venueSubtotal)} <span class="text-xs font-medium text-white/40">/ {duration} jam</span></div>
+              </div>
+              <Button class="w-full shrink-0 sm:w-auto" size="lg" onclick={startCheckout} disabled={availabilityBusy || slotState(selectedSlot, duration) !== 'free'}>{availabilityBusy ? 'Memeriksa jadwal…' : slotState(selectedSlot, duration) !== 'free' ? 'Pilih jam tersedia' : user ? 'Lanjut ke checkout' : 'Masuk untuk booking'} <ChevronRight size={16}/></Button>
             </div>
           </div>
         </section>
